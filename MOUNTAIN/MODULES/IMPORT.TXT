@@ -1,0 +1,121 @@
+*********************************************
+** Description des modules d'import video  **
+** Pour Mountain                           **
+*********************************************
+
+
+Fonctionnement g‚n‚ral:
+
+Le module n'a jamais … ouvrir le fichier (Fopen),
+ni le fermer. Le handle est pass‚ en parametre.
+La position dans le fichier n'est pas garantie,
+il est donc recommend‚ de se remetre au debut
+a chaque appel.
+
+Le module est appell‚ avec init_anim pour ouvrir
+le fichier, cette routine doit retourner divers
+paramettres comme le nombre d'images, la reso...
+Elle doit ˆtre rapide car … chaque fois que
+l'utilisateur charge un fichier, tous les modules
+sont appell‚s jusqu'a ce qu'un reconnaisse l'anim
+(ou l'image).
+
+Ensuite le module est appell‚ pour chaque image
+avec read_image, l'extraction doit se faire
+au format 16 bits TC falcon. 
+
+Le module est cens‚ pouvoir ˆtre amen‚ … g‚rer plusieurs
+anims en meme temps, il ne doit donc pas memoriser des
+parametre sur une animation lui meme (dans une section BSS
+pas exemple) tous les parametres n‚c‚ssaires pour g‚rer
+une anim doivent ˆtres stoqu‚s dans le "buffer de travail",
+ce buffer est cree pas Mountain, il y en a un pour chaque anim,
+il est disponible dŠs l'init et n'est jamais modifi‚ par
+mountain jusqu'a la fermeture de l'anim.
+
+
+	Puisqu'il s'agit d'un PRG, il contient 28 octets d'en-tete 
+	ou seront plac‚s un texte de description du module (avec
+	un ‚diteur hexa par exemple), sauf ds le cas d'un module
+	… reloger.
+
+	En-tete:
+
+	+00	28 octets inutiles du PRG
+	+28	LONG id, 4 caractŠres de signature du module
+	+32	LONG ver='1.00', 4 caractŠres pour la version
+	+36	LONG work, taille du buffer de travail qui doit ˆtre
+			r‚serv‚  par anim ouverte avant d'appeler init_anim. 
+			Ainsi, chaque anim a son buffer, et
+			le module peut en traiter plusieurs a la fois.
+	+40	LONG Flags, voir plus loin
+	+44   (ou +72) premier saut: bra init_anim
+	+48   (ou +76) second saut : bra read_frame
+	.... reste du fichier
+
+
+FLAGS : C'est un champ de bits definissant le module :
+%0000 0000  0000 0000   0000 0000  00IR VVVV
+ 31................16   15.................0
+
+0-3 : VVVV VERSION
+           version du format, pour l'instant %0001, si le format
+           de module evolue par la suite, on passera … %0010 (2).
+           Cela permetra a Mountain de gerer les anciens modules
+           meme si le format evolue.
+4   : R    RELOGABLE
+           Si se bit est … 1, le module doit etre relog‚, dans ce
+           cas, l'entete du programme doit ˆtre conservee (601a...)
+           et la description doit etre mise apres les flags, avant
+           les BRA, et doit toujours faire 28 octets, les BRA
+           sont donc deplac‚s a partir du 72ieme octet.
+           La plupart du temps, ce flag doit ˆtre … 0, le module
+           ‚tant relogeable.
+5    : I   IMAGE
+           Ce bit est a 1 si le module charge uniqument des image,
+           0 si le module charge des animations (mais elle peuvent
+           durer qu'une image bien sur !!)
+
+Les autres bits ne sont pas encore definis, ainsi ils doivent
+ˆtres mis … 0 !
+
+Exemples :
+module de chargement animation DL (relogeable): %000001
+module de chargement TGA (relogeable): %100001 -> $21.L
+module de chargement QT (… reloger): %010001 -> $11.L
+
+	Appel de INIT_ANIM
+	----------------
+un tableau est pass‚ en paramettre, son adresse est donnee en A0.
+
+offset	taille	description
+0			WORD 		handle (handle du fichier ouvert, ENTREE)
+2			LONG 		taille (taille totale du fichier, ENTREE)
+6			WORD 		return ($FFFF si erreur, $0000 si fichier reconnu, RETOUR)
+8			WORD 		x      (largeur anim, RETOUR)
+10			WORD 		y      (hauteur anim, RETOUR)
+12			LONG 		num    (nombre d'images, RETOUR)
+16			LONG 		buf_size (taille buffer n‚cessaire pour 'read_frame', RETOUR)
+20			LONG 		work_adr (adresse buffer de travail, ENTREE)
+24			LONG 		id_string (adresse chaine info sur le fichier, RETOUR, 19 car maxi + '0')
+
+ Il suffit que A0.L contiennent l'adresse de cette stucture lors de
+l'appel … INIT_ANIM.
+
+
+	Appel de READ_FRAME
+	-------------------
+
+
+offset	taille	description
+0			WORD 		handle (handle du fichier ouvert, ENTREE)
+2			LONG 		old_index (index de l'image deja dans le buffer image, ENTREE)
+6			LONG 		new_index (index de l'image voulue, ENTREE)
+10			LONG 		buffer (adresse buffer demande par INIT_ANIM (tampon disk par ex), ENTREE)
+14			LONG 		dest (adresse destination au pixel prŠs, ENTREE)
+18			WORD 		largeur (largeur ecran en pixels, ENTREE)
+20			LONG 		work_adr (adresse buffer de travail : le mˆme qu'avant, ENTREE)
+24 		WORD		return ($FFFF si erreur, $0000 sinon, RETOUR)
+
+Dans work adr, le programme stoque toutes les infos qu'il veut sur
+l'anim, Mountain n'y touchera jamais.

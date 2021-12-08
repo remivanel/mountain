@@ -1,0 +1,139 @@
+*********************************************
+** Description des modules d'export video  **
+** Pour Mountain                           **
+** date : 17/5/98                          **
+*********************************************
+
+
+Fonctionnement g‚n‚ral:
+
+Cette fois, le module est appell‚ avec init_anim
+avec le nom du fichier a cr‚er, il(s) doi(ven)t ˆtres
+cr‚‚s par le module cette fois. L'appel a init_anim
+permet au module de stoquer ses paramˆtres et
+pourquoi pas d'ouvrir et de cr‚er l'entˆte du fichier.
+
+
+Ensuite le module est appell‚ pour chaque image
+avec write_image, l'image est donne en 16 bits 
+TC falcon. 
+Attention, bien faire attention … fermer le fichier
+lors de la reception de la derniere image (nb_img-1).
+
+
+	Puisqu'il s'agit d'un PRG, il contient 28 octets d'en-tete 
+	ou seront plac‚s un texte de description du module (avec
+	un ‚diteur hexa par exemple)
+
+	En-tete:
+
+	+00	28 octets inutiles du PRG -> desc du module
+	+28	LONG id, 4 caractŠres de signature du module
+	+32	LONG ver='1.00', 4 caractŠres pour la version
+	+36	LONG work, taille du buffer de travail qui doit ˆtre
+			r‚serv‚  par anim ouverte avant d'appeler init_anim. 
+			Ainsi, chaque anim a son buffer.
+	+40	LONG taille_para, taille du buffer que doit reserver 
+	      Mountain pour contenir les parametres
+	+44	LONG Flags, voir plus loin
+	+48   (ou +76) premier saut: bra init_anim
+	+52   (ou +80) second saut : bra write_frame
+	+56   (ou +84) saut de paramettrage : bra para_module
+	+60   (ou +88) saut de remplissage des paramttres par defaut : bra para_defaut
+	.... reste du fichier
+
+
+FLAGS : C'est un champ de bits definissant le module :
+%0000 0000  0000 0000   0000 0000  00PR VVVV
+ 31................16   15.................0
+
+BITS  NOM  DESCRIPTION
+0-3 : VVVV VERSION
+           version du format, pour l'instant %0001, si le format
+           de module evolue par la suite, on passera … %0010 (2).
+           Cela permetra a Mountain de gerer les anciens modules
+           meme si le format evolue.
+4   : R    RELOCATE
+           Si se bit est … 1, le module doit etre relog‚, dans ce
+           cas, l'entete du programme doit ˆtre conservee (601a...)
+           et la description doit etre mise apres les flags, avant
+           les BRA, et doit toujours faire 28 octets, les BRA
+           sont donc deplac‚s a partir du 72ieme octet.
+           La plupart du temps, ce flag doit ˆtre … 0, le module
+           ‚tant relogeable.
+5   : P    PARAMETRABLE
+           Si ce bit est a 1, le module est paramettrable,
+           c'est … dire que Mountain peut appeler la
+           troisieme routine, le module proposera alors
+           des paramettrages sur la sauvegarde … l'utilisateur.
+           Meme si le module n‚st pas paramettrable, il est
+           conseill‚ de pointer vers un RTS, on ne sait jamais...
+
+Les autres bits ne sont pas encore definis, ainsi ils doivent
+ˆtres mis … 0 !
+
+Exemples :
+module de sauvegarde suite de TG1 (relogeable): %000001
+module de sauvegarde FLH (relogeable, param.): %100001 -> $21
+
+
+	Appel de INIT_ANIM
+	----------------
+un tableau est pass‚ en paramettre, son adresse est donnee en A0.
+
+offset	taille	description
+0			LONG		name (adresse du nom du fichier choisi SANS LE CHEMIN, l'extention est rajoutee par le module, ENTREE)
+4			WORD 		return ($FFFF si erreur, $0000 si ok, RETOUR)
+6			WORD 		x      (largeur anim, ENTREE)
+8			WORD 		y      (hauteur anim, ENTREE)
+10			WORD 		frequence    (vitesse anim, en fps, ENTREE)
+12			LONG 		num    (nombre d'images, ENTREE)
+16			LONG 		buf_size (taille buffer n‚cessaire pour 'write_frame' (tampon disk par ex), RETOUR)
+20			LONG 		work_adr (adresse buffer de travail, ENTREE)
+24			LONG		para_adr (adresse zone de paramettres, 0 si pas de zone (taille_para = 0), ENTREE)
+
+
+	Appel de WRITE_FRAME
+	--------------------
+un tableau est pass‚ en paramettre, son adresse est donnee en A0.
+
+offset	taille	description
+0			LONG 		new_index (index de l'image a inserer (commence a 0, fini a nb_img-1), ENTREE)
+4			LONG 		buffer (adresse buffer demande par INIT_ANIM (tampon disk par ex), ENTREE)
+8			LONG 		OLD_image (adresse de la precedente image au pixel prŠs, ENTREE)
+12			LONG 		NEW_image (adresse de l'image courante au pixel prŠs, ENTREE)
+16			WORD 		retour (0000->ok $ffff->erreur, RETOUR)
+18			LONG 		work_adr (adresse buffer de travail : le mˆme qu'avant, ENTREE)
+22			LONG		para_adr (adresse zone de paramettres, 0 si pas de zone (taille_para = 0), ENTREE)
+
+
+	Appel de PARAM_MODULE
+	---------------------
+
+Avec cet appel, le module peut afficher une interface pour
+que l'utilisateur regle le paramettrage de la sauvegarde.
+Les parametres seront sauv‚s dans une zone d‚livr‚e par
+Mountain, le module n'a pas … la sauver (cette zone
+sera automatiquement sauv‚e abec le module).
+La taille de cette zone est definie dans l'entete du module
+
+L'ADRESSE DE LA ZONE DE PARAMETTRES EST DIRECTEMENT DONEE EN A0:
+
+para_adr (adresse zone de paramettres, 0 si pas de zone (taille_para = 0), ENTREE)
+
+
+	Appel de PARAM_DEFAUT
+	---------------------
+
+Cet appel sert a remplir la zone de paramettre avec les options
+par defaut, dans le cas ou le module est appele pour la premiere
+fois, ainsi, la sauvegarde se fera toujours avec des parametres
+corrects.
+
+L'ADRESSE DE LA ZONE DE PARAMETTRES EST DIRECTEMENT DONEE EN A0:
+
+para_adr (adresse zone de paramettres, 0 si pas de zone (taille_para = 0), ENTREE)
+
+
+
+** EOF **

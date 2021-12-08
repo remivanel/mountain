@@ -1,0 +1,1497 @@
+{\rtf1\pc{\fonttbl{\f1\fnil Ad Lib;}
+{\f2\fnil Baskerville;}
+{\f3\fnil Dutch 801 Roman BT;}
+{\f4\fnil Seagull Heavy BT;}
+{\f5\fnil Swiss 721 BT;}
+}{\stylesheet{\sbasedon222\snext0 Normal;}
+{\s1\qc\li170\fi340\ri283\tqc\tx1304\hyphpar0\f1\b0\i0\ul0\outl0\nosupersub\fs36\expnd0 Titre;}
+{\s2\li170\fi794\ri283\tx1304\tx4365\hyphpar0\f3\b\i\ul0\outl0\nosupersub\fs28\expnd0 Paragraphe;}
+{\s3\qj\li170\fi340\ri57\tx1304\tx4478\hyphpar0\f5\b0\i0\ul0\outl0\nosupersub\fs20\expnd0 Normal;}
+{\s4\qj\li170\fi340\ri283\tx1304\tx4478\hyphpar0\f5\b\i0\ul0\outl0\nosupersub\fs22\expnd0 SS paragraf;}
+{\s5\qj\li170\fi340\ri283\tx1077\tx4705\hyphpar0\f5\b0\i0\ul0\outl0\nosupersub\fs20\expnd0 Sommaire;}
+}\paperw8390\paperh11904\margl397\margr1871\margt340\margb976\pgnstart1
+\ftntj\ftnrestart\facingp\margmirror\makeback\widowctrl
+\sectd\pgndec\headery340\footery584\cols1\colsx567\pgndec
+{\footerl\pard\plain\qc\f5\fs20\tab\fs28 -\fs24\chpgn\fs28 -\par
+}{\footerr\pard\plain\qc\f5\fs20\tab\fs28 -\fs24\chpgn\fs28 -\par
+}\qc\f5\fs22\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\pard\li283\fi454\ri170\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\pard\qc\li283\fi454\ri170\f2\i\fs40 The New Team\f5\i0\fs22\par
+\pard\qc\li170\fi340\ri283\tqc\tx1304\f1\fs36 Mountain\par
+\pard\li170\fi340\ri283\tqc\tx1304\f5\fs22\par
+\pard\li170\fi340\ri283\tx1304\tx3911\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28\tab Auteurs\par
+\pard\li170\fi340\ri283\tx1304\tx3911\f5\b0\i0\fs22\'F9Programmation du logiciel : \tab\i R\'82mi Vanel\i0\par
+\'F9Librairie GEM :\tab\i Jacques Delavoix\i0\par
+\tab\tab\i Olivier Booklage\par
+\tab\tab R\'82mi Vanel\par
+\i0\'F9Routines de tramage et \par
+conversion TC :\tab\i Guillaume Tello\i0\par
+\'F9Chargement et relocation\par
+des modules :\tab\i Didier Mequignon\i0\par
+\par
+\par
+\par
+\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28\tab Remerciements\par
+\pard\qj\li170\fi340\ri283\tx1304\tx3911\f5\b0\i0\fs22 Didier Briel pour la traduction. Alexandre Lahure, 
+Kamel Boukhmis pour les tests et conseils ainsi que 
+Alexandre Very et Ludovic Bevand. Guillaume Tello, 
+Didier Mequignon pour leurs aide et conseils. 
+Jean-Baptiste Mille (\f4 JIB\f5  !) pour le logo.\par
+Je remercie aussi tous les beta testeurs.\par
+\par
+\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28\tab Copies et piratage\par
+\pard\qj\li170\fi340\ri283\tx1304\tx3911\f5\b0\i0\fs22 Il est formellement interdit de faire des copies du 
+logiciel en dehors d'une copie de sauvegarde pour 
+son usage personnel. Mountain est un logiciel qui a 
+demand\'82 une \'82norme masse de travail personnel, 
+aussi je vous incite \'85 ne jamais distribuer votre version 
+du logiciel. Chaque version est de toute fa\'87on 
+personnelle et prot\'82g\'82e contre la copie.\par
+\par
+\par
+\par
+\par
+\pard\s1\qc\li170\fi340\ri283\tqc\tx1304\f1\fs36 Sommaire\par
+\pard\qj\li170\fi340\ri283\tx1304\tx3911\f5\fs22\par
+\pard\li170\fi340\ri283\tx1077\tx4705\f3\b\i\fs28 Chapitre 1- Mountain\par
+\pard\qj\li170\fi340\ri283\tx1077\tx4705\f5\b0\i0\fs20\tab Pr\'82sentation\tab 4\par
+\tab Configuration minimale\tab 4\par
+\tab Installation\tab 4\par
+\tab Lancement\tab 4\par
+\tab Travailler avec Mountain\tab 5\par
+\pard\s5\qj\li170\fi340\ri283\tx1077\tx4705\tab Premier d\'82part\tab 5\par
+\pard\qj\li170\fi340\ri283\tx1077\tx4705\par
+\pard\li170\fi340\ri283\tx1077\tx4705\f3\b\i\fs28 Chapitre 2 - Les menus\par
+\pard\qj\li170\fi340\ri283\tx1077\tx4705\f5\b0\i0\fs20\tab Fichier\tab 7\par
+\tab Fen\'88tres\tab 12\par
+\tab Projet\tab 13\par
+\tab Options\tab 14\par
+\pard\qj\li170\fi340\ri283\tx1077\tx4705\fs22\par
+\pard\li170\fi340\ri283\tx1304\tx4365\f3\b\i\fs28 Chapitre 3 - Les fen\'88tres\par
+\pard\qj\li170\fi340\ri283\tx1077\tx4705\f5\b0\i0\fs20\tab Les Pistes\tab 17\par
+\tab Les Objets\tab 20\par
+\tab Le visualisateur\tab 21\par
+\tab Le projet\tab 22\par
+\tab Les transitions\tab 23\par
+\pard\qj\li170\fi340\ri283\tx1077\tx4705\par
+\pard\li170\fi340\ri283\tx1304\tx4365\f3\b\i\fs28 Chapitre 4 - Les attributs\par
+\pard\qj\li170\fi340\ri283\tx1077\tx4705\f5\b0\i0\fs20\tab L'intensit\'82\tab 26\par
+\pard\s5\qj\li170\fi340\ri283\tx1077\tx4705\tab La transparence \tab 27\par
+\tab Le mouvement\tab 28\par
+\tab Les effets\tab 29\par
+\pard\qj\li170\fi340\ri283\tx1077\tx4705\par
+\pard\li170\fi340\ri283\tx1304\tx4365\f3\b\i\fs28 Chapitre 5 - Les TimeSplines \par
+\pard\s5\qj\li170\fi340\ri283\tx1077\tx4705\f5\b0\i0\fs20\tab Utilit\'82\tab 31\par
+\tab S\'82lection\tab 31\par
+ \tab Edition\tab 32\par
+\pard\qj\li170\fi340\ri57\tx1304\tx4478\par
+\pard\li170\fi340\ri283\tx1077\tx4705\f3\b\i\fs28 Annexe\par
+\pard\qj\li170\fi340\ri283\tx1077\tx4705\f5\b0\i0\fs20\tab De l'utilit\'82 des fichiers de \i KeyFrames\tab\i0 34\par
+\pard\s5\qj\li170\fi340\ri283\tx1077\tx4705\tab Pour les programmeurs\tab 34\par
+\tab Note sur les TimeSplines\tab 35\par
+\pard\qj\li170\fi340\ri283\tx1077\tx4705\tab Note de l'auteur\tab 36\i\par
+\par
+\pard\qj\li170\fi340\ri283\tx1304\tx4478\i0\fs22\par
+\pard\s1\qc\li170\fi340\ri283\tqc\tx1304\f1\fs36 Chapitre 1- Mountain\par
+\pard\qc\li170\fi340\ri283\tqc\tx1304\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28\tab Pr\'82sentation\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\i0\fs20 Mountain\b0  est un logiciel de montage video virtuel destin\'82 
+aux ordinateurs compatibles \b Atari\b0 . Il est con\'87u pour permettre 
+la cr\'82ation de videos et clips \'85 partir d'images ou d'animations 
+d\'82j\'85 existantes.\par
+\pard\qj\li170\fi340\ri283\tx1304\tx4478\fs22\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28\tab Configuration minimale\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20\'F94 Mo minimum de RAM.\par
+\'F9un processeur 68030 ou plus.\par
+\'F9un disque dur.\par
+\'F9un affichage haute r\'82solution (640*480 minimum)\par
+\par
+\i Conseils d'utilisation :\i0\par
+\par
+\'F9Vous pouvez utiliser un \'82cran virtuel pour augmenter la 
+surface de travail disponible (avec Videl Inside, Centscreen ou 
+Nova control).\par
+\'F9Il faut si possible utiliser un syst\'8Ame d'exploitation g\'82rant 
+les ic\'93nes couleurs (TOS 4 ou plus, MagiC, N-AES...)\par
+\'F9Il faut avoir si possible Speedo Gdos, NVDI 3, 4 ou 5 
+install\'82.\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28\par
+\tab Installation\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20 Il suffit de copier tous les fichiers de votre disquette 
+originale dans un r\'82pertoire de votre disque dur. D\'8As le 
+premier lancement, il faudra r\'82gler une fois pour toutes les 
+options de \b Mountain\b0  (Menu "\i Options\i0 ") et notamment les 
+diff\'82rents chemins (Menu "\i Options->Chemins\i0 ") si ceux 
+propos\'82s ne vous conviennent pas. Veillez aussi \'85 bien choisir 
+dans le menu "\i Options->Carte graphique\i0 " le mode d'affichage 
+correspondant \'85 votre r\'82solution. Une fois les options choisies, 
+n'oubliez pas de les sauver (Menu "\i Options->Sauver options\i0 "), 
+notez aussi qu'en sauvant les options, la position de chaque 
+fen\'88tres est aussi sauv\'82e.\par
+\pard\qj\li170\fi340\ri283\tx1304\tx4478\fs22\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28\par
+\par
+\tab Lancement\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20 Le lancement du logiciel est des plus classique, il suffit de 
+bien v\'82rifier que l'on est dans la bonne r\'82solution et de double 
+cliquer sur le fichier Mountain.prg. Notez aussi qu'il est 
+possible de poser l'ic\'93ne du programme \b Mountain\b0  
+directement sur le bureau pour un acc\'8As plus rapide par la 
+suite.\par
+\pard\qj\li170\fi340\ri283\tx1304\tx4478\fs22\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28\tab Travailler avec Mountain\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20 Avant de se lancer dans le logiciel, il serait bon de 
+comprendre un peu la mani\'8Are de proc\'82der. \b Mountain\b0  a 
+besoin pour travailler d'\i objets\i0 . Un \i objet\i0  est une image ou une 
+animation import\'82e dans la liste d'\i objets\i0 , c'est l'\'82l\'82ment de 
+base de travail. Chaque \i objet\i0  pourra \'88tre utilis\'82 dans les 
+\i pistes\i0 , il fera ainsi partie du \i projet\i0 . Le \i projet\i0  est l'ensemble des 
+\i objets\i0  r\'82ellements utilis\'82s dans les \i pistes\i0 , avec leurs 
+caract\'82ristiques propres de \i mouvements\i0 , \i effets\i0 , \i transparence\i0  
+et \i intensit\'82\i0 .Les \i pistes\i0  fonctionnent comme un banc de 
+montage audio. On y place les diff\'82rents \i objets\i0  pour simuler le 
+d\'82roulement final de l'animation g\'82n\'82r\'82e.\par
+Tous ces concepts seront revus en d\'82tails dans chaque 
+partie d\'82di\'82e du manuel.\par
+\pard\qj\li170\fi340\ri283\tx1304\tx4478\i\fs22\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\fs28 Premier d\'82part\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20 Pour votre premier essai de \b Mountain\b0 , il est conseiller 
+d'\'82tudier l'exemple fourni. Apr\'8As avoir r\'82gl\'82 les param\'8Atres de 
+carte graphique et de chemins, ouvrez l'exemple avec le menu 
+"\i Fichier->ouvrir\i0 " puis s\'82lectionnez le fichier 
+"\i exemple/exemple.mpj\i0 ". Quatre fen\'88tres s'ouvrent alors, 
+disposez-les \'85 votre convenance pour y voir plus clair (vous 
+pouvez alors resauver les options). Dans la fen\'88tre des \i Objets\i0 , 
+vous pouvez double cliquer sur une cellule pour visionner 
+l'image ou l'animation correspondante. Dans la fen\'88tre des 
+pistes, le fait de cliquer dans la zone des graduations 
+provoque l'affichage d'une preview du calcul \'85 un instant 
+donn\'82, vous pouvez laisser appuy\'82 le bouton de la souris et la 
+bouger de gauche a droite pour "animer" votre preview. En 
+appuyant sur la touche \i Undo \i0 du clavier, une version anim\'82e 
+de la preview est calcul\'82e (la partie situ\'82e entre les deux 
+bornes rouges du bandeau jaune). Une fois ces premi\'8Ares 
+prises en main effectu\'82es, n'h\'82sitez pas d\'82placer les objets 
+sur les pistes ou double cliquer sur ceux ci pour modifier tous 
+les param\'8Atres. Vous apprendrez beaucoup en "manipulant" le 
+logiciel dans tous les sens. Vous pouvez rajouter des objets 
+sur les pistes en les "tirant" (clic maintenu puis d\'82placement de 
+la souris) de la fen\'88tre des \i Objets\i0  vers la fen\'88tre des \i Pistes\i0 . 
+Notez enfin que le double clic est simul\'82 par un clic-droit.\par
+\pard\qj\li170\fi340\ri283\tx1304\tx4478\fs22\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\pard\qc\li170\fi340\ri283\tqc\tx1304\f1\fs36\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\pard\s1\qc\li170\fi340\ri283\tqc\tx1304 Chapitre 2 - Les menus\par
+\pard\qc\li170\fi340\ri283\tqc\tx1304\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\fs20 Tous les menus sont bien entendu accessible avec la 
+souris, mais aussi \'85 l'aide de racourcis clavier du style 'Control 
++ O' pour ouvrir un projet, not\'82 ^O dans le menu. Notez que 
+les raccourcis clavier peuvent \'88tre modifi\'82s en \'82ditant le fichier 
+Mountain.RSC avec un \'82diteur de ressources.\par
+ Le premier menu "Mountain->Informations" n'a qu'une 
+entr\'82e qui ouvre une bo\'8Cte d'information sur le logiciel et la 
+personne enregistr\'82e.\par
+\pard\qj\li170\fi340\ri283\tx1304\tx4478\fs22\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28 Le menu "Fichier"\par
+\pard\qj\li170\fi340\ri283\tx1304\tx4478\f5\b0\i0\fs22\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b Nouveau projet\par
+\pard\qj\li170\fi340\ri283\tx1304\tx4478\b0\fs20 Cette entr\'82e importante va vous permettre de 
+commencer un nouveau projet. \par
+\pard\qj\li3685\fi454\ri283\tx1304\tx4592 Elle ouvre une 
+bo\'8Cte offrant la 
+possibilit\'82 de choisir le 
+nom du projet (utilis\'82 
+pour le nom du fichier 
+projet), la r\'82solution 
+du projet final (la taille 
+en pixel de l'animation 
+g\'82n\'82r\'82e), la longueur 
+(le nombre d'image de 
+votre animation), la 
+vitesse de restitution et 
+pour finir la taille de\par
+\pard\qj\li170\ri283\tx1304\tx4478 la preview en fonction de celle du projet.\par
+\pard\qj\li170\fi340\ri283\tx1304\tx4478 Notez que tous ces param\'8Atres pourront \'88tres chang\'82s 
+en cours d'\'82dition par la suite par le menu "\i Projet->format"\i0 . 
+La longueur du projet est constamment adapt\'82e en fonction 
+des animations ajout\'82es. Il est int\'82ressant de garder une 
+preview plus petite que la taille r\'82elle du projet, aussi le 
+calcul des previews (anim\'82es ou fixes) sera plus rapide, au 
+d\'82triment d'une qualit\'82 qu'on ne recherche g\'82n\'82ralement 
+pas lors d'une preview.\par
+\b\fs24\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\fs22 Charger Projet\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Cette entr\'82e ouvre un s\'82lecteur de fichier pour choisir un 
+projet \'85 charger, le projet en cours d'\'82dition sera alors perdu 
+s'il n'est pas sauv\'82 avant.\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Sauver Projet \b0\fs16 (uniquement si un projet est d\'82j\'85 en cours 
+d'\'82dition)\b\fs22\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Pour sauver sur le disque le projet en cours d'\'82dition. Le 
+fichier cr\'82\'82 ne contient pas les diff\'82rents \i objets\i0  du projet ni 
+l'animation finale, il contient juste la d\'82finition des \i objets\i0 , les 
+\i mouvements, effets, transitions...\i0  Le fichier r\'82sultant est donc 
+de petite taille.\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Sauver sous \b0\fs16 (uniquement si un projet est d\'82j\'85 en cours 
+d'\'82dition)\b\fs22\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Pour sauver le projet sous un nouveau nom ou un nouvel 
+emplacement sur le disque.\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Importer FLH\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Cette entr\'82e vous permet de charger une animation au 
+format FLH dans la liste des \i objets\i0 .\par
+\pard\qj\li3911\fi227\ri170\tx1304\tx4478 Si c'est la premi\'8Are 
+fois que le fichier FLH 
+choisi est charg\'82, 
+une bo\'8Cte s'ouvrira 
+alors pour g\'82n\'82rer un 
+fichier de KeyFrames 
+associ\'82 \'85 votre FLH. 
+Cette \'82tape est 
+indispensable pour 
+chaque animation 
+FLI, FLC ou FLH 
+charg\'82e.\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 Le choix de la fr\'82quence de KeyFrames aura une 
+incidence sur la rapidit\'82 d'acc\'8As \'85 l'animation. Plus la 
+fr\'82quence est \'82lev\'82e (genre 2 ou 5) plus l'acc\'8As sera rapide.\par
+Pour plus d'information sur les KeyFrames, reportez vous \'85 
+l'annexe d\'82di\'82e de ce manuel.\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Importer FLI/C\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Le fonctionnement de cette entr\'82e est exactement 
+identique \'85 l'import d'une animation FLH, \'85 l'exception que 
+cette entr\'82e concerne les fichiers FLI ou FLC.\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Importer fichier\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Cette fonction va importer un fichier \'85 l'aide des diff\'82rents 
+modules charg\'82s. Le fichier s\'82lectionn\'82 sera propos\'82 \'85 tous 
+les diff\'82rents modules de chargement en m\'82moire jusqu'\'85 ce 
+qu'un module conviennent. C'est ainsi qu'il faut proc\'82der pour 
+importer une animation QuickTime, une image TGA...\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Importer liste\b0\fs20\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 Il faut utiliser cette entr\'82e si vous voulez utiliser une suite 
+d'images comme une animation. Par exemple, si vous avez 
+dans un r\'82pertoire une liste d'images TGA num\'82rot\'82es (style 
+IMG050.TGA), il est possible de traiter cette liste comme une 
+seule animation. Il y a deux modes de recherche. Le popup \'85 
+gauche de la bo\'8Cte de dialogue permet de choisir entre le 
+mode de recherche par liste num\'82rot\'82e (notre exemple) ou 
+par r\'82pertoire via un masque.\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+Dans le mode \i liste num\'82rot\'82e\i0 , il faut conna\'8Ctre le nombre 
+de digits composant le nombre de chaque nom d'image. Dans 
+notre exemple, il y a 3 digits, si les noms d'images sont 
+comme ceci : IMG1.TGA ..... IMG9.TGA, IMG10.TGA ....,il faut 
+mettre 1 dans le nombre de digits. Notez que dans la mesure 
+du possible, Mountain adapte automatiquement ce nombre 
+suivant les fichiers propos\'82s. Les champs 'Premi\'8Are image' et 
+'Nombre d'images' ne sont pas \'85 remplir tout de suite, ils le 
+seront automatiquement. Il faut maintenant ouvrir le s\'82lecteur 
+de fichier pour choisir la premi\'8Are des images. Ensuite, si tous 
+s'est bien pass\'82, le type des images doit appara\'8Ctre, ainsi que 
+leur nombre. Vous pouvez maintenant modifier '\'85 la main' les 
+champs 'Premi\'8Are image' et 'Nombre d'images' si vous voulez 
+sauter des images.\par
+Si le nombre d'images ne semble pas exacte, v\'82rifiez qu'il 
+n'y ai pas de 'trous' dans la num\'82rotation.\par
+\par
+Dans le mode \i r\'82pertoire\i0 , il suffit simplement d'ouvrir le 
+s\'82lecteur de fichier, de choisir le bon r\'82pertoire et de rentrer 
+un masque de fichier ad\'82quate (genre IMG*.TGA).\par
+Vous pouvez pr\'82cisez ensuite le mode de tri, par nom 
+(ordre alphab\'82tique), par date ou par le mode 'pas de tri' 
+(normalement ordre de cr\'82ation des fichiers).\par
+\par
+Si les fichiers ne sont pas reconnus, v\'82rifier que le module 
+correspondant est bien en m\'82moire et \pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 reessayez. Le champ \'85 
+droite 'image \'85 prendre en compte' ne sert que dans le cas o\'97 
+chaque fichier est une animation. Dans ce cas, il est possible 
+de prendre par exemple \'85 chaque fois la dixi\'8Ame image de 
+chaque fichier.\par
+\par
+L'import des fichiers par liste n'utilise que les modules, il 
+est donc impossible d'importer une suite de fichiers FL[ICH].\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+Exporter module\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\b0\fs20\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 C'est cette fonction qu'il faudra utiliser une fois votre travail 
+fini. Cette entr\'82e appelle une bo\'8Cte de dialogue permettant de 
+sauver votre montage sous forme d'animation. L'export se fait 
+via des modules.\par
+Une fois les bornes choisies, il faut choisir un nom de 
+fichier, n'entrez pas d'extension, elle sera automatiquement 
+ajout\'82e par le module. Choisissez le format de sortie en 
+s\'82lectionnant le module appropri\'82, certains modules peuvent 
+\'88tre param\'8Atr\'82s via le bouton 'Configurer'.\par
+L'option 'Affichage' permet de voir l'animation se jouer au 
+fur et \'85 mesure de sa cr\'82ation, cela fait patienter au d\'82triment 
+d'une petite perte de vitesse. Cliquez sur 'Lancer le calcul' pour 
+g\'82n\'82rer l'animation.\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Exporter M-Player\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\b0\fs20\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 Grace \'85 une collaboration avec Guillaume TELLO, 
+Mountain est capable d'exporter une animation en utilisant les 
+routines de sauvegarde MOV et AVI de M-Player. Les images 
+issues du calcul seront directement envoy\'82es \'85 M-Player sans 
+passer par le disque ce qui \'82conomise du temps et de la 
+m\'82moire. Bien sur, il vous faut disposer du programme 
+M-Player si possible dans sa version enregistr\'82e car sinon 
+tous les exports seront en niveaux de gris.\par
+N'oubliez pas de bien pr\'82ciser l'emplacement du 
+programme M-Player dans les options (menu 
+'Options->Chemins'.\par
+Les r\'82glages propos\'82s dans la bo\'8Cte de dialogue sont tous 
+d\'82crits dans la documentation de M-Player.\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Info Modules\b0\fs20\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 Cette entr\'82e est utile si vous voulez des renseignements 
+sur les diff\'82rents modules charg\'82s (modules d'import et 
+d'export).\par
+\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Quitter\b0\fs20\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 Pour quitter le programme.\par
+\par
+\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28 Le menu "Fen\'88tres"\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Entr\'82es 'Objets', 'Pistes', 'Projet' et 
+'Transitions'\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Ces entr\'82es ouvrent chacunes les fen\'88tres d\'82di\'82es du 
+programme. Ces fen\'88tres seront d\'82taill\'82es s\'82par\'82ment dans le 
+prochain chapitre. Elle ne peuvent \'88tre ouverte que si un projet 
+est d\'82j\'85 en cours d'\'82dition.\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Info\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Cette entr\'82e bistable active ou d\'82sactive l'apparition d'une 
+petite fen\'88tre indiquant le niveau de zoom actuel (expliqu\'82 
+plus loin) et la position du curseur (lors d'une preview ou d'un 
+d\'82placement par exemple).\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Entr\'82es 'Info/options', 'Effets', 'Mouvement', 
+'Transparence' et 'Intensit\'82'\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Ces entr\'82es ne sont utilisables que si un objet du projet est 
+s\'82lectionn\'82. Elles permettent de r\'82gler ses attributs, attributs 
+qui sont expliqu\'82s plus loin.\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28\par
+Le menu "Projet"\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Activation des pistes\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 L'affichage des pistes de la fen\'88tre principale peut \'88tre 
+activ\'82 ou d\'82sactiv\'82 de fa\'87on ind\'82pendante pour chaque piste 
+pour gagner en place.\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Ajouter superposition sur 'Animation A', 
+'Animation B' ou 'G\'82n\'82ral'\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Cette entr\'82e est utilis\'82e pour cr\'82er une nouvelle piste de 
+superposition. Dans le cas des piste A et B, cela permet de 
+superposer des images la piste en question avant le calcul de 
+la transition (mixage des piste A et B).\par
+La superposition sur le projet (G\'82n\'82ral) ajoute des images 
+apr\'8As le calcul de la transition. Ces superpositions peuvent 
+appara\'8Ctre avec des effets de transparence ou d'intensit\'82.\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Supprimer piste\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Cette option est utile si vous avez trop de pistes de 
+superposition dans le projet, elle permet de supprimer la 
+derni\'8Are piste de superposition sur la piste A, B ou G\'82n\'82ral. 
+Attention : la derni\'8Are piste ne doit pas contenir d'objets !\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Image de fond\b0\fs20\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 L'image de fond est celle qui appara\'8Ct par d\'82faut s'il n'y a 
+aucune animation sur une piste. C'est aussi l'image que l'on 
+peut voir si les objets du projet de cet endroit sont 
+transparents ou r\'82duits.\par
+Il est possible de mettre en fond une couleur unie, choisie 
+par ses trois composantes Rouge Verte et bleue, ou alors un 
+objet qui sera jou\'82 en boucle affich\'82 par une m\'82thode de 
+mosa\'8Bque (effet de pavage) ou de zoom (l'objet prend la taille 
+du projet, quitte \'85 le d\'82former).\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Format\b0\fs20\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 La bo\'8Cte ouverte par cette entr\'82e est la m\'88me que pour la 
+cr\'82ation d'un nouveau projet, on peut y r\'82gler la taille du 
+projet, le nombre d'images, la vitesse et la taille de la preview. 
+Appel\'82e par cette entr\'82e, la bo\'8Cte offre un nouveau bouton 
+permettant de r\'82duire le nombre d'images du projet au 
+maximum, afin de ne pas laisser d'espace vide \'85 la fin des 
+pistes.\par
+\par
+\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28 Le menu "Options"\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Chemins\b0\fs20\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 Cette bo\'8Cte permet de sp\'82cifier l'emplacement d'un 
+visualisateur externe d'animation (M-Player ou Aniplayer 
+recommand\'82s), d'un visualisateur d'images, du dossier des 
+modules d'import/export et du programme M-Player (pour 
+l'export MOV/AVI).\par
+Les visualisateurs sont optionnels si celui de Mountain 
+vous convient.\par
+\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Visualisateur\b0\fs20\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 Dans cette bo\'8Cte vous pourrez choisir la position par d\'82faut 
+de la fen\'88tre du visualisateur. Il y a aussi des options pour 
+recommencer une animation \'85 la fin d'une lecture, afficher une 
+barre d'info o\'97 se trouvera la position chiffr\'82e dans l'animation. 
+Une autre option permet d'activer le mode d'affichage rapide, 
+dans ce mode les images sont directement affich\'82es \'85 l'\'82cran 
+pour plus de rapidit\'82.\par
+Ce mode ne marche que lorsque l'\'82cran est dans une 
+r\'82solution True color 16 bits du Falcon. L'autre inconv\'82nient 
+vient aussi du fait que l'image est directement calcul\'82e \'85 
+l'\'82cran: on peut voir le calcul des images lors d'un acc\'8As \'85 une 
+position al\'82atoire d'un fichier FLH par exemple, c'est aussi 
+g\'88nant lors d'une lecture arri\'8Are.\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Pistes\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Il est possible de changer le mode d'affichage des pistes 
+dans cette bo\'8Cte, on a le choix entre afficher des vignettes sur 
+toute la longueur, lent mais esth\'82tique, n'afficher que la 
+premi\'8Are et la derni\'8Are vignette de l'animation, avec le nom 
+entre les deux ou alors uniquement le nom de l'objet, ce qui 
+est tr\'8As rapide. On peut aussi choisir de reserver un buffer 
+pour le calcul des vignettes, cela acc\'82l\'82rera l'affichage g\'82n\'82ral 
+des pistes. Une valeur de 100 Ko minimum est recommand\'82e, 
+n'h\'82sitez pas \'85 en mettre plus. La derni\'8Are option concerne la 
+proportion des vignettes, si la proportion n'est pas 
+s\'82lectionn\'82e, chaque vignette fera 48*48 quelque soit la taille 
+de l'objet r\'82duit.\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Preview anim\'82e\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 La preview anim\'82e permet de calculer dans une fen\'88tre 
+une partie du projet pour se rendre compte de son travail. La 
+preview anim\'82e est lanc\'82e pas un appui sur la touche 'Undo' 
+et est jou\'82e entre les bornes de la zone jaune de preview. Le 
+param\'82trage est succint, la preview 'pr\'82calcul\'82e' permet de 
+calculer toute la preview d'un coup afin de la jouer plus 
+rapidement ensuite. Dans ce mode, l'animation est calcul\'82e 
+sur le disque dur puis jou\'82e \'85 la vitesse du projet (Control-Z 
+pour la changer). Un appuis sur 'Espace' rejoue l'animation, 
+'Esc' quitte le mode.\par
+ La preview 'temps r\'82el' se lance plus rapidement mais 
+peut subir des ralentissements dus aux longs calculs. Le mode 
+pr\'82emptif bloque le GEM pendant la restitution pour gagner du 
+temps. L'affichage du curseur est utile pour voir dans la fen\'88tre 
+des pistes une ligne verticale indiquant la progression de la 
+preview.\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Carte graphique\b0\fs20\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 C'est ici que vous devez choisir le mode d'affichage qui 
+correspondra le mieux \'85 votre r\'82solution actuelle. Essayez de 
+trouver le mode se rapprochant le plus de votre configuration 
+et faites afficher Mountain une image (en chargeant une 
+animation et en ouvrant la fen\'88tre des objets). Faites plusieurs 
+essais si \'87a ne marche pas.  L'option 'Forcer l'utilisation de la 
+VDI' peut \'88tre utile si les images apparaissent mal ou d\'82cal\'82es, 
+cette option est inutile avec les modes "Falcon 16 bits 
+standard", "\'82cran 16 couleurs" ou "Tramage monochrome type 
+Bayer" qui utilisent d\'82j\'85 la VDI. Notez que le mode "Tramage 
+monochrome type Bayer" marche (th\'82oriquement) dans toutes 
+les r\'82solutions sur toutes les machines.\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Affichage SMPTE\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Plut\'93t que d'afficher un nombre d'images dans les 
+graduation des pistes, il est possible de passer en timecode 
+SMPTE (Society of Motion Picture and Television). Cet 
+affichage est plus explicite, il est de la forme : 
+heures:minutes:secondes:images. Dans Mountain, les heures 
+ne sont pas affich\'82es (trop rarement utilis\'82es). Par exemple, 
+5:14:16 repr\'82sente 5 minutes, 14 secondes et 16 images 
+(environ 4/6 secondes pour une cadence de 25 
+images/secondes).\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Jauge M\'82moire\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Cette entr\'82e bistable active ou d\'82sactive l'affichage d'une 
+jauge indiquant le taux de remplissage de la RAM. Il faut veiller 
+\'85 ce que cette barre ne soit a fond !\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 Sauver options\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Cette entr\'82e sauve tous les param\'8Atres de Mountain, ainsi 
+que la position et la taille de toutes les fen\'88tres et des bo\'8Ctes 
+de dialogue.\par
+\par
+\par
+\par
+\par
+\par
+\pard\s1\qc\li170\fi340\ri283\tqc\tx1304\f1\fs36 Chapitre 3 - Les Fen\'88tres\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28\par
+Les Pistes\par
+\par
+\par
+\par
+\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+La fen\'88tre des pistes est la plus importante de Mountain 
+car c'est ici que vous allez faire votre montage. Cette fen\'88tre va 
+\'88tre d\'82crite zone par zone, pour bien saisir son 
+fonctionnement.\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22\par
+1 - La zone de preview\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Deux marqueurs en forme de triangles d\'82limitent une zone 
+jaune. Cette zone sera utilis\'82e de plusieurs mani\'8Ares. Par 
+exemple lors du lancement d'une \i preview anim\'82e \i0 par un 
+appuis sur la touche 'Undo', la preview sera jou\'82e entre les 
+deux bornes choisie, aussi lors de l'export final de l'animation, 
+ces bornes pourront \'88tre utilis\'82s par d\'82faut pour n'exporter 
+qu'une partie du projet.\par
+Le d\'82placement des bornes est simple, il suffit de cliquer 
+autour de la borne choisie en maintenant le bouton appuy\'82 
+puis de d\'82placer de gauche \'85 droite la borne.\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22\par
+\par
+2 - La barre des temps\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Cette zone affiche une graduation o\'97 chaque graduation 
+repr\'82sente une image du projet final (dans les bas niveaux de 
+zoom du moins). Les nombres en dessous repr\'82sentent le 
+num\'82ro de l'image \'85 partir du d\'82but du projet. \par
+Cette zone permet aussi d'obtenir une \i preview instantan\'82e\i0 , 
+important pour voir ce que donnera le montage final \'85 un point 
+pr\'82cis du projet. Le fait de cliquer sur une graduation 
+provoquera le calcul d'une seule image \'85 ce point pr\'82cis. Cette 
+image appara\'8Ctra dans une fen\'88tre s\'82par\'82e, ce qui vous 
+permettra de bien saisir les effets de vos actions. Il est aussi 
+possible de maintenir le bouton appuy\'82 en bougeant la souris 
+de gauche \'85 droite pour simuler une petite animation. Un petit 
+triangle indique la position de la preview.\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22\par
+3 - La d\'82nomination des pistes\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Dans cette partie est affich\'82 le nom des pistes se trouvant 
+en face (dans la zone 4). Voici un glossaire de ces noms (un ? 
+remplace un nombre de 1 \'85 50):\par
+\b A\b0  :  C'est la piste A, la premi\'8Are piste dans laquelle on met 
+un objet\par
+\b SA?\b0  : Ce sont les pistes de superposition, l\'85 o\'97 l'on met 
+les objets se Superposant  \'85 la piste A\par
+\b T\b0  : C'est la piste de transition, on n'y place pas des objets 
+mais des effets de transition comme le fameux fondu.\par
+\b B\b0  : C'est la piste B, elle sera utilis\'82e s'il n'y \'85 rien en A ou si 
+on utilise une \i transition\i0  de la A vers la B (ou inversement).\par
+\b SB?\b0  : idem SA? mais en \b S\b0 uperposition sur la \b B\b0 .\par
+\b SG? \b0 : Ces pistes se superposent en dernier lieu sur le 
+projet (\b S\b0 uperposition \b G\b0\'82n\'82rale).\par
+\par
+\pard\s4\qj\li170\fi340\ri283\tx1304\tx4478\b\fs22 4 - Les pistes\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\b0\fs20 Avant d'\'82tudier la plus importante zone de Mountain, je 
+vais vous pr\'82ciser comment Mountain calcule chaque image 
+du projet. \par
+\'F9 Tout d'abord, l'image de fond est g\'82n\'82r\'82e.\par
+\'F9 Puis l'image de la piste A est calcul\'82e, les effets lui sont 
+appliqu\'82s, l'image obtenue est plac\'82e sur l'image de fond 
+suivant le mouvement et la transparence.\par
+\'F9 Les images de superposition sont calcul\'82es une \'85 une 
+suivant le m\'88me principe, elle sont plac\'82es dans l'ordre 
+suivant le mouvement, l'intensit\'82 et la transparence sur l'image 
+de la piste A\par
+\'F9 Il en va de m\'88me pour les pistes B et SB? dans un buffer 
+s\'82par\'82.\par
+\'F9 La transition entre les images A et B est calcul\'82e.\par
+\'F9 Les pistes SG? sont superpos\'82es une \'85 une suivant le 
+mouvement, l'intensit\'82 et la transparence sur l'image r\'82sultant 
+de la transition.\par
+\'F9 Et voil\'85, le tout est sauv\'82 ou affich\'82.\par
+\par
+\pard\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 Chaque objet inclus dans les pistes appara\'8Ct suivant une 
+bande horizontale contenant des vignettes repr\'82sentatrices ou 
+le nom de l'objet. Il y a de la place en plus sous les pistes de 
+superpositions, elle est utilis\'82e pour afficher une ligne noir 
+repr\'82sentant le niveau d'intensit\'82 \'85 chaque instant (car 
+l'intensit\'82 peut varier au cours du temps, voir le chapitre sur les 
+attributs).\par
+\par
+Vous savez tout, maintenant voyons comment utiliser \'87a. 
+Les objets vont \'88tres tir\'82s depuis la fen\'88tre des objets sur 
+chacune des pistes. Une fois sur les pistes, chaque objet peut 
+\'88tre d\'82plac\'82, pour cela, il faut cliquer directement sur l'objet en 
+question, et, tout en maintenant le bouton appuy\'82, choisir une 
+nouvelle position. Un objet peut \'88tre d\'82plac\'82 d'une piste \'85 une 
+autre, sauf sur la piste des transitions. Durant le d\'82placement, 
+un fant\'93me en video-inverse de l'objet doit appara\'8Ctre 
+indiquant sa nouvelle position, si celui-ci n'appara\'8Ct pas c'est 
+qu'il est impossible de d\'82placer l'objet \'85 cette position (les 
+objets ne peuvent se chevaucher).\par
+Ces objets peuvent aussi \'88tre redimensionn\'82s dans le 
+temps, ainsi, si on "raccourcit" dans le temps une animation, 
+des images seront saut\'82es pour acc\'82l\'82rer l'animation, si on 
+l'allonge, elle sera plus lente car des images seront 
+d\'82doubl\'82es. C'est aussi tr\'8As utile pour introduire une image 
+sur toute une partie du projet. Pour redimensionner un objet, il 
+suffit de cliquer \'85 l'extr\'88me fin de sa repr\'82sentation dans les 
+pistes, de maintenir le bouton tout en choisissant une nouvelle 
+taille (la nouvelle longueur est affich\'82e dans la fen\'88tre d'info en 
+temps r\'82el).\par
+Le fait de cliquer simplement sur un objet le s\'82lectionne, il 
+appara\'8Ct alors en video-inverse dans la 'fen\'88tre du projet'.\par
+Si on double-clic sur cet objet un popup appara\'8Ct pour 
+r\'82gler les attributs de l'objet (voir plus loin 'fen\'88tre du projet'), 
+l'enlever du  projet ou le visualiser.\par
+Si vous manipulez de tr\'8As grandes animations, ou au 
+contraire si vous voulez travailler \'85 l'image pr\'8As, il sera utile de 
+changer le zoom des pistes. Ce zoom ne modifie que la 
+repr\'82sentation des pistes. Il peut \'88tre r\'82gler dans la fen\'88tre 
+d'info gr\'83ce au popup de zoom. Un zoom de 1/1 est un zoom 
+'image par image', un zoom 1/5 affiche une vignette alors que 
+5 sont saut\'82es. Un zoom de 1/50 permet d'avoir une vue 
+d'ensemble car tout est tr\'8As r\'82duit..\par
+\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28 La fen\'88tre des objets\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20\par
+C'est dans cette fen\'88tre que tous les objets charg\'82s vont 
+se retrouver.\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+ Chaque objet appara\'8Ct dans une bande horizontale, on y 
+trouve une r\'82duction de l'objet, son nom, le format et le 
+nombre d'images qui le compose. Les deux nombres entre 
+parenth\'8Ases sont les num\'82ros de la premi\'8Are et derni\'8Are 
+image \'85 prendre en compte lors de la prochaine inclusion 
+dans les pistes. En effet, sur une animation de 100 images, il 
+peut \'88tre utile de ne commencer \'85 l'utiliser qu'a partir de la 
+20\super\'82me\nosupersub  image pour ne finir qu'\'85 la 70\super\'82me\nosupersub  par exemple. Pour 
+r\'82gler ces bornes voyez la partie sur le visualisateur, ou celle 
+sur la fen\'88tre du projet (pour les objets d\'82j\'85 inclus dans le 
+projet). Ces bornes sont appel\'82es images 'IN' et 'OUT'.\par
+Un double clic sur un objet ouvre le visualisateur sur cet 
+objet.\par
+Un simple clic ouvre un popup avec plusieurs actions 
+disponibles.\par
+\'F9\i  informations\i0  pour afficher des informations sur l'objet, 
+r\'82gler les images IN et OUT et choisir l'image utilis\'82e pour la 
+pr\'82sentation de l'objet.\par
+\'F9\i  Visualiser\i0  pour ouvrir le visualisateur (idem double clic).\par
+\'F9\i  \pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 Visu. Externe\i0  lance un visualisateur 'externe', entendez 
+par l\'85 un autre programme. On peut choisir ces programmes 
+dans les options (menu 'options->chemins'). On peut d\'82finir 
+un visualisateur diff\'82rent pour les images et les animations. Je 
+vous recommande bien entendu pour les animations M-Player 
+ou Aniplayer.\par
+\'F9\i  D\'82truire\i0  enl\'8Ave l'objet de la liste. Attention ! L'objet peut 
+d\'82j\'85 \'88tre utilis\'82 dans le projet !\par
+\pard\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28 Le visualisateur\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20\par
+\pard\qj\li3004\fi340\ri283\tx1304\tx4478 Il permet de voir une 
+animation ou une image. 
+Dans le cas d'une animation, 
+les boutons de type magneto 
+peuvent \'88tre utilis\'82s, leur 
+utilisation est classique, Stop, 
+Play, avance ou recul d'une 
+image. L'ascenseur indique 
+l'image vue par rapport \'85 
+l'animation totale, il peut \'88tre 
+d\'82plac\'82 manuellement pour 
+rechercher facilement une 
+image.\par
+\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 Les boutons 'IN' et 'OUT' servent \'85 r\'82gler les fameuses 
+bornes qui d\'82limiteront l'utilisation de l'animation. Le fait de 
+double cliquer sur un de ces boutons am\'8Ane directement \'85 la 
+borne en question.\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28\par
+\par
+La fen\'88tre du projet\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20 Dans cette fen\'88tre apparaissent tous les objets utilis\'82s 
+dans les pistes. Outre la r\'82duction et le nom, il y a aussi des 
+informations sur la position de l'objet dans les pistes et les 
+bornes r\'82ellement utilis\'82es dans l'animation. \par
+On peut double cliquer sur une case pour lancer la 
+visualisation de l'objet correspondant. Un simple clic dans une 
+case s\'82lectionne l'objet, un deuxi\'8Ame ouvre un popup dont 
+nous allons d\'82tailler les options. Notez que le contenu de ce 
+popup est en majeur partie accessible depuis le menu 
+'fen\'88tre-s\'82lection'.\par
+\'F9 l'option '\i Info/Option'\i0  ouvre un nouveau dialogue. \par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+On peut y r\'82gler '\'85 la main' les bornes utilis\'82es pour la 
+prise des images dans l'animation. Il y a des informations sur 
+la pr\'82sence d'un mouvement ou une transparence appliqu\'82 \'85 
+l'objet. On y r\'8Agle aussi le \i mode de replay\i0 , c'est la fa\'87on dont 
+seront jou\'82es les images. Le mode \i normal\i0  joue l'animation du 
+d\'82but \'85 la fin, quitte \'85 sauter ou \'85 ajouter des images. Le 
+mode 'en boucle' ne saute ou n'ajoute aucune image, mais 
+joue l'animation qu'en partie ou plusieurs fois si n\'82cessaire, 
+enfin le mode 'ping pong' joue l'animation d'avant en arri\'8Are.\par
+La derni\'8Are zone permet d'assigner une \i TimeSpline\i0  \'85 
+l'objet. Cette TimeSpline pourra contr\'93ler avec pr\'82cision le 
+replay, produire une vive acc\'82l\'82ration suivie d'un brusque 
+ralentissement n'est possible qu'avec l'utilisation des 
+TimeSplines. L'utilisation et la cr\'82ation des TimeSplines est 
+d\'82taill\'82e dans un chapitre d\'82di\'82.\par
+\par
+\'F9 l'option '\i Enlever'\i0  supprime l'animation des pistes.\par
+\'F9 l'option '\i Visualiser'\i0  ouvre le visualisateur sur l'objet 
+correspondant.\par
+\'F9 Les autres options permettent de r\'82gler les attributs de 
+l'objet. Ces attributs sont comment\'82s dans le chapitre suivant.\par
+\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28 Les transitions\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20 Les transitions servent \'85 mixer suivant un effet les pistes A 
+et B avant l'inclusion dans le projet final. Cela peut \'88tre par 
+exemple un simple fondu ou alors un effet d'apparition en 
+rideau. Toutes les transitions disponibles sont r\'82unies dans la 
+fen\'88tre d\'82di\'82e, pour les utiliser, c'est le m\'88me principe que 
+pour inclure un objet dans une piste : il faut cliquer et tirer 
+l'effet voulut vers la piste 'T' (pensez \'85 activer son apparition !). \par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+Une fois dans les pistes, la transition peut \'88tre d\'82plac\'82e ou 
+"redimensionn\'82e" (pour \'82largir son champ d'action). Un 
+double clic ouvre un popup avec trois options.\par
+\'F9 l'option '\i Information\i0 ' ouvre une bo\'8Cte permettant de 
+choisir les bornes 'd\'82but' et 'fin' de la transition, de changer le 
+sens de l'effet (piste B vers A au lieu de A vers B) et enfin de 
+choisir la TimeSpline affich\'82e dans les pistes (si la transition 
+utilise plusieurs TimeSplines, on peut ainsi choisir celle qui 
+sera affich\'82e).\par
+\'F9 l'option '\i Enlever\i0 ' supprime la transition.\par
+\'F9 l'option '\i Param\'88trer'\i0  ouvre une bo\'8Cte adapt\'82e \'85 chaque 
+effet (uniquement si l'effet est \pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 param\'88trable).\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+Chaque transition peut admettre plusieurs param\'8Atres.\par
+- Les param\'8Atres chiffr\'82s peuvent \'88tres fixes, varier suivant 
+une TimeSpline ou admettre une image comme param\'8Atre.\par
+Les trois boutons \'85 gauche fixent le mode de variation.\par
+La valeur fixe est choisie grace \'85 l'ascenseur horizontal.\par
+Le bouton 'Spline lin\'82aire 1:1' ouvre la bo\'8Cte de s\'82lection 
+des TimeSplines.\par
+Le dernier mode n'est pas disponible pour tous les effets 
+car il est tr\'8As sp\'82cial. Il permet de choisir une piste, dont le 
+contenu sera une image dont chaque point donnera une 
+valeur diff\'82rente au param\'8Atre. On peut ainsi n'appliquer l'effet 
+que sur une zone bien pr\'82cise de l'image. Il faut bien sur qu'il y 
+ait une animation sur la piste concern\'82e (g\'82n\'82ralement une 
+piste de superposition). Il est aussi recommand\'82 de mettre 
+l'intensit\'82 de cette piste \'85 z\'82ro pour que l'animation ne soit 
+utilis\'82e qu'en param\'8Atre. Cette notion est assez compliqu\'82e, il 
+vaut mieux faire des essais pour comprendre, notamment avec 
+le fondu.\par
+En cliquant sur '\i Piste \pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 xx'\i0 , un popup appara\'8Ct pour choisir la 
+piste contenant l'image param\'8Atre.\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+- Les param\'8Atres du type couleur sont plus simples, il suffit 
+de cliquer sur le cadre color\'82 pour faire appara\'8Ctre un 
+s\'82lecteur de couleur.\par
+- Il existe aussi des param\'8Atres du type "coordonn\'82es d'un 
+point". Pour les choisir, il suffit de cliquer sur le bouton "\i Clique 
+!\i0 ', de choisir une position dans la zone de preview et de 
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 recliquer.\par
+- Il est aussi possible d'activer certaines fonctions par le 
+biais de switchs 'on/off' pr\'82sents dans le bas de la bo\'8Cte.\par
+\par
+La partie droite de la bo\'8Cte contient une preview qui peut 
+\'88tre actualis\'82e en temps r\'82el suivant le changement des 
+param\'8Atres si le bouton ad\'82quat est s\'82lectionn\'82. Le petit 
+ascenseur nomm\'82 'preview' permet de choisir  l'avancement 
+de la preview. Le bouton '\i Anime'\i0  lance une preview anim\'82e, 
+qu'il est possible d'interrompre avec le bouton 2 de la souris 
+ou par les touches 'Shift', 'Control' ou 'Alternate'.\par
+\par
+\par
+\par
+\par
+\par
+\par
+\pard\s1\qc\li170\fi340\ri283\tqc\tx1304\f1\fs36 Chapitre 4 - Les attributs\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\fs20\par
+\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28 L'intensit\'82\par
+\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20 Id\'82al pour cr\'82er une apparition de fant\'93me, l'intensit\'82 
+alloue un pourcentage \'85 chaque objet qui va d\'82terminer son 
+niveau d'incrustation sur le fond. Une valeur de 100% (par 
+d\'82faut) superpose l'objet sans laisser le fond appara\'8Ctre. 50% 
+fait part \'82gale entre le fond et l'objet, enfin, 0% n'affiche pas du 
+tout l'objet. L'intensit\'82 peut \'88tre finement r\'82gl\'82e dans la bo\'8Cte 
+de dialogue d\'82di\'82e.\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+On peut choisir une intensit\'82 constante, invariable pour 
+l'objet, les valeurs propos\'82es par d\'82faut (0, 25, 50, 75 et 100%) 
+n'ont pas \'82t\'82s choisies par hazard. Elles font appel \'85 des 
+routines sp\'82cialement optimis\'82es et rapides (inspir\'82es du 
+travail de Gilles \pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 Audoly). Si vous voulez vraiment une valeur 
+libre, choisissez le mode variable et \'82ditez une TimeSpline 
+constante. En effet, le mode \i variable\i0  propose d'assigner une 
+TimeSpline \'85 l'intensit\'82 de l'objet, elle pourra donc varier au 
+cours du temps, pour obtenir une apparition progressive d'un 
+logo par exemple.\par
+\par
+\par
+\pard\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28 La transparence\par
+\pard\f5\b0\i0\fs20\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 Cet effet permet de rendre une couleur transparente pour 
+laisser appara\'8Ctre le fond derri\'8Are un objet. Pour utiliser par 
+exemple un personnage sur fond vert sans le fond vert, vous 
+devez utiliser la transparence.\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+Dans la bo\'8Cte doit \'88tre choisie la couleur \'85 enlever, on peut 
+entrer \'85 la main les trois composantes RVB ou choisir 
+directement la couleur avec la souris en cliquant sur la 
+r\'82duction de l'objet \'85 droite des composantes. Un exemple de 
+r\'82sultat est donn\'82 \'85 droite, pour r\'82actualiser cette preview, 
+vous pouvez cliquer dessus ou s\'82lectionner le bouton \i Temps 
+R\'82el\i0  qui r\'82affichera la preview \'85 chaque modification. Vous 
+pouvez changer l'image utilis\'82e pour la preview (pour les 
+objets de type animation) avec le champ du bas, validez avec 
+le bouton \i M.A.J\i0 , ce bouton valide \'82galement les champs de 
+s\'82lection de couleur. \par
+Dans la preview, la couleur n'est pas vraiment rendue 
+transparente, elle est remplac\'82e par la couleur choisie dans le 
+damier en bas \'85 gauche.\par
+L'ascenseur nomm\'82 \i Tol\'82rance\i0  permet de rendre 
+transparentes les couleurs proche de la couleur choisie, cela 
+peut \'88tre utile pour les images de qualit\'82 moyenne, o\'97 la 
+couleur de fond n'est pas exactement uniforme. Plus la 
+tol\'82rance est \'82lev\'82e, plus les couleurs \'82loign\'82es de la couleur 
+de base deviendront transparentes. \par
+\par
+\par
+\par
+\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28 Le mouvement\par
+\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20 Voila une importante partie \'85 \'82tudier. Le mouvement 
+permet d'assigner \'85 chaque objet une position et un niveau de 
+zoom, qui peuvent accessoirement varier au cour du temps.\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+La partie la plus importante de la bo\'8Cte est la partie blanche 
+du centre. C'est ici que vous pourrez voir comment l'objet va 
+\'88tre positionn\'82 dans l'animation finale. Le cadre noir 
+repr\'82sente l'animation finale, le cadre bleu est l'objet 
+actuellement \'82dit\'82, vous pouvez modifier sa position et son 
+zoom grace aux ascenseurs \i POS X\i0 , \i POS Y\i0 , \i ZOOM X\i0  et \i ZOOM 
+Y\i0 . Vous verrez le cadre bleu se d\'82placer en m\'88me temps que 
+les ascenseurs. Notez que l'objet peut ainsi d\'82passer le cadre 
+de l'animation, il sera donc tronqu\'82 \'85 l'affichage. \par
+A gauche de la bo\'8Cte se trouve un petit cadre qui peut 
+afficher un preview du mouvement choisi. Cliquez dessus pour 
+r\'82actualiser le preview. Le bouton '\i Temps r\'82el\i0 ' permet 
+d'animer cette preview en m\'88me temps que les r\'82glages sont 
+effectu\'82s. Le bouton \i Animation\i0  donne une preview de tout le 
+mouvement si celui-ci est compos\'82 de plusieurs \'82tapes.\par
+Le cadre du dessous ne sert que dans le cas o\'97 l'objet sort 
+du cadre ou est r\'82duit au point de ne pas recouvrir 
+enti\'8Arement l'animation finale, il permet de choisir une couleur 
+de remplissage pour les parties \'85 cot\'82 de l'objet. On peut 
+aussi laisser ces parties transparentes pour voir le fond 
+derri\'8Are l'objet (option par d\'82faut). La couleur de remplissage 
+peut \'88tre choisie composante par composante ou en cliquant 
+directement sur la r\'82duction de l'objet juste \'85 cot\'82.\par
+\par
+Nous allons voir maintenant comment animer votre 
+mouvement. Il faut le d\'82composer en \'82tapes, chaque \'82tape 
+aura ses propres caract\'82ristiques de position et zoom. Pour 
+commencer votre animation, il faut r\'82gler la premi\'8Are \'82tape 
+puis cliquer sur '\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\i Nouv. Pt.'\i0 , les caract\'82ristiques de la premi\'8Are 
+\'82tape sont recopi\'82es dans la nouvelle et vous pouvez 
+maintenant les modifier pour simuler un mouvement. N'oubliez 
+pas de visualiser votre travail dans la preview en cliquant sur 
+\i 'Animation'\i0 , animation que l'on peut stopper par l'appuis sur le 
+bouton 2 ou les touches 'Shift', 'Control' ou 'Alternate'.\par
+Vous pouvez voir dans le cadre principal les deux \'82tapes 
+de votre animation avec un lien entre les deux cadres qui est 
+en fait le chemin suivit. Dans la barre des temps situ\'82e en bas 
+apparaissent les \'82tapes sous forme d'une barre verticale 
+surmont\'82e d'un triangle. L'\'82tape actuellement \'82dit\'82e appara\'8Ct 
+avec un triangle plein. A chaque nouvelle \'82tape cr\'82\'82e un 
+nouveau triangle appara\'8Ct derri\'8Are celui s\'82lectionn\'82 (\'85 part 
+pour la premi\'8Are cr\'82ation). Chaque triangle peut \'88tre d\'82plac\'82 
+dans le temps par un clic maintenu dessus. D\'82placer un 
+triangle donne plus ou moins de temps \'85 une \'82tape donn\'82e, 
+c'est utile pour dynamiser l'animation. L'utilisation d'une 
+TimeSpline pour la gestion du temps permettra une gestion du 
+temps plus ais\'82e. La TimeSpline contr\'93lera le d\'82roulement 
+dans le temps du mouvement. Par exemple, si vous cr\'82ez un 
+simple chemin vertical, il suffit de l'associer \'85 une TimeSpline 
+en forme de sinuso\'8Bde pour voir l'effet d'un rebond.\par
+\pard\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28 Les effets\par
+\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20 Il est possible d'assigner un ou plusieurs effets \'85 un objet 
+donn\'82. Dans la colonne de gauche apparaissent tous les 
+effets disponibles, pour en appliquer un, il suffit de cliquer 
+dessus et de choisir le bouton \i 'Appliquer'\i0 , on peut aussi 
+directement double cliquer dessus. Tous les effets choisis sont 
+dans la liste de droite. Une fois un effet choisi par clic, on peut 
+le supprimer de la liste avec le bouton \i 'Effacer'\i0 , \'82changer sa 
+place avec l'effet en dessus si vous voulez r\'82ordonner les 
+effets, ou encore le param\'88trer avec le bouton ad\'82quat si son 
+nom se finit par trois petits points. Notez que vous pouvez 
+r\'82ordonner la liste en d\'82pla\'87ant directement \'85 la souris un 
+objet.\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+Les boutons \i Charger\i0  et \i Sauver\i0  permettent de conserver et 
+de recharger sur le disque une liste d'effet accompagn\'82e de 
+ses param\'8Atres.\par
+Le bouton \i M\'82moriser\i0  conserve la liste des effets ainsi que 
+les param\'8Atres en m\'82moire. Le bouton \i Rappel\i0  \pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 r\'82applique 
+cette liste. Cette manipulation est utile pour copier simplement 
+une liste d'effets sur plusieurs objets.\par
+L'ordre des effets est important, ils seront appliqu\'82s \'85 la 
+suite, du premier vers le dernier, chaque effet reprenant 
+l'image affect\'82e de l'effet pr\'82c\'82dent.\par
+On peut param\'88trer un effet en double cliquant dessus ou 
+en le s\'82lectionnant et en cliquant sur \i param\'88trer\i0 . Le 
+param\'82trage est quasiment identique \'85 celui des \i transitions\i0 .\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\pard\qc\li57\ri170\tqc\tx1190\f1\fs36 Chapitre 5 - Les TimeSplines\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\fs20\par
+\par
+\par
+\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28 Utilit\'82\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20 Les TimeSplines sont une partie ind\'82pendante de 
+Mountain, elle peuvent \'88tre utiles pour temporiser un effet, un 
+mouvement, la lecture d'une animation....\par
+Le but est de transformer le temps lin\'82aire en courbe de 
+valeurs que l'on pourra appliquer \'85 un certain param\'8Atre, 
+param\'8Atre qui varira ainsi au cour du temps d'une mani\'8Are 
+totalement contr\'93lable. Une TimeSpline est une courbe \'85 
+prendre comme une fonction math\'82matique, le temps en 
+abscisse, \'85 chaque date correspond une valeur prise sur la 
+courbe. Pour q'une TimeSpline soit efficace, il faut bien 
+entendu que l'objet s'\'82tale sur plusieurs images afin qu'il dure 
+dans le temps.\par
+\par
+\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28 S\'82lection\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20 Parsem\'82s dans l'application, des boutons sont pr\'82sents 
+vous invitant \'85 choisir une TimeSpline. Une fois press\'82s, une 
+nouvelle bo\'8Cte appara\'8Ct avec au centre la liste des TimeSplines 
+disponibles.\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+On les s\'82lectionne en cliquant dessus, une fois le bouton 
+\i Confirmer\i0  s\'82lectionner, la TimeSpline sera appliqu\'82e. Mais 
+avant cela, il y a plusieurs options disponibles, les boutons 
+\i Charger\i0  et \i Sauver\i0  pour les conserver sur le disque, le bouton 
+\i Nouvelle\i0  ajoute une TimeSpline vierge \'85 la liste, elle peut \'88tre 
+\'82dit\'82e avec le bouton correspondant. La premi\'8Are TimeSpline 
+appel\'82e "TimeSpline lin\'82aire" ne peut \'88tre \'82dit\'82e ou effac\'82e, 
+elle est permanente.\par
+\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28 Edition\par
+\par
+\par
+\par
+\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+La bo\'8Cte d'\'82dition des TimeSplines est divis\'82e en deux 
+parties principales.\par
+A gauche sont regroup\'82es les principales commandes, \'85 
+droite il y a la repr\'82sentation de la courbe \'82dit\'82e.\par
+Les commandes \i Charger \i0 et \i Sauver \i0 se passent de 
+commentaire. Le bouton \i Reset\i0  r\'82initialise la courbe en une 
+droite identique \'85 celle par d\'82faut. Les boutons \i 1,2 \i0 et \i 3\i0  de la 
+cat\'82gorie\i  Smooth\i0  se chargent d'adoucir la courbe \'82dit\'82e 
+manuellement suivant une force croissante.\par
+La commande \i Fonction\i0  permet d'acc\'82der \'85 des courbes 
+pr\'82\'82tablies par un popup. Chaque courbe se param\'8Atre dans 
+une nouvelle bo\'8Cte de dialogue, la courbe est appliqu\'82e entre 
+les deux \i bornes\i0  d'action (voir plus loin).\par
+La commande \i Effet\i0  propose plusieurs effets applicables \'85 
+la portion de courbe comprise entre les deux \i bornes\i0 . Le 
+param\'82trage est similaire \'85 celui des \i Fonctions\i0 .\par
+Le popup initialement appel\'82 \i Manuel\i0  sert \'85 changer le 
+mode d'\'82dition de la courbe, le mode \i manuel\i0  s'apparente \'85 
+une \'82dition point par point de la courbe. A 256 valeurs d'entr\'82e 
+correspondent 256 valeurs en sortie, chaque point peut \'88tre 
+\'82dit\'82 manuellement en dessinant la courbe "\'85 la souris" dans 
+la partie droite de la bo\'8Cte. L'utilisation de la commande 
+\i Smooth\i0  peut am\'82liorer un trac\'82 hasardeux \'85 la souris.\par
+En mode \i Lignes\i0  on place plusieurs points de contr\'93les qui 
+d\'82termineront le trac\'82 d'une ligne bris\'82e passant par ces 
+points. On peut d\'82placer un point avec un clic maintenu sur 
+celui-ci. Pour cr\'82er un nouveau point, il suffit de cliquer sur 
+une partie de la courbe o\'97 il n'y en a pas. Cliquer sur un point 
+en maintenant la touche shift enfonc\'82e l'effacera.\par
+Le mode \i Lagrange\i0  est tr\'8As similaire au mode \i lignes\i0  \'85 la 
+diff\'82rence que ce n'est pas une ligne qui relie les points mais 
+une courbe polynomial beaucoup plus liss\'82e.\par
+Le mode B\'82sier fait de m\'88me mais de fa\'87on plus rapide et 
+moins globale.\par
+Les coordonn\'82es X et Y indiquent la position de curseur 
+dans la zone de dessin.\par
+Le switch \i Interpol\'82e\i0   ne sert que pour le mode manuel, il 
+affine le calcul lorsque la TimeSpline est utilis\'82e. C'est 
+uniquement n\'82cessaire pour les TimeSplines agissant sur des 
+longues animations (plus de 256 images ou 256 valeurs 
+d'entr\'82es.)\par
+La barre d\'82limit\'82e par deux triangles sous la courbe affiche 
+les \i bornes d'action\i0  relative \'85 la courbe. Les deux triangles 
+rouges repr\'82sentent les deux bornes, ils sont d\'82pla\'87ables \'85 la 
+souris. Ainsi, seul la zone encadr\'82e par les triangles se verra 
+affect\'82e de la \i fonction,\i0  de \i l'effet\i0  ou du \i smooth\i0 . C'est tr\'8As 
+pratique pour cr\'82er une courbe en plusieurs parties.\par
+Enfin, le champ en bas \'85 droite de la bo\'8Cte permet de 
+choisir un nom pour la courbe.\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\pard\s1\qc\li170\fi340\ri283\tqc\tx1304\f1\fs36 Annexe\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\fs20\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28 De l'utilit\'82 des fichiers de 
+KeyFrames\par
+\f5\b0\i0\fs20\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478 L'import d'un nouveau FL? provoque la cr\'82ation d'un fichier 
+de keyframes (uniquement la premi\'8Are fois). Le logiciel a 
+besoin d'acc\'82der \'85 n'importe quelle image d'un FL? \'85 
+n'importe quel moment, or dans un FL?, les images sont 
+cod\'82es les unes par rapport \'85 la pr\'82c\'82dente, donc pour 
+acc\'82der \'85 l'image 80, il faut tout d\'82compacter jusqu'\'85 la 80, 
+c'est long. C'est pourquoi quand on importe un FL? dans le 
+logiciel, un fichier de KeyFrames est cr\'82\'82, contenant toutes les 
+images multiples de 10. Ce qui permet d'acc\'82der \'85 n'importe 
+quelle image en prenant une image dans le fichier de 
+KeyFrames suivit de quelques images dans le FL?. Le 
+probl\'8Ame est r\'82gl\'82 depuis belle lurette avec les MOV et AVI.\par
+Le choix de la fr\'82quence des keyframes est important, plus 
+la fr\'82quence est \'82lev\'82e (genre une keyframe toutes les 2 \'85 8 
+images), plus l'acc\'8As \'85 l'animation sera rapide (lorsque l'on 
+revient en arri\'8Are par exemple), mais le fichier de Key Frames 
+sera alors gros.\par
+La fr\'82quence des key frames n'acc\'82l\'8Are pas la lecture 
+'Avant' d'une animation.\par
+\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28 Pour les programmeurs\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20\par
+Il est possible de programmer soit m\'88me des modules 
+pour Mountain. Vous pouvez ajouter des modules d'import, 
+d'export, de transition et d'effet. Reportez-vous au r\'82pertoire 
+\i Coding\i0  du logiciel.\par
+\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+Note sur les TimeSplines\par
+\pard\f5\b0\fs20\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\i0 Le bouton "Interpol\'82e" dans l'\'82diteur de TimeSpline 
+demande quelques pr\'82cisions.\par
+Il change la m\'82thode de calcul dans tous les modes sauf 
+dans le cas des lignes bris\'82es (c'est comme s'il \'82tait toujours 
+actif dans ce mode).\par
+L'interpolation n'est n\'82cessaire que si les valeurs d'entr\'82es 
+d\'82passent 255. (Par exemple l'animation en question fait plus 
+de 255 images)\par
+Le mode polyn\'93mes de Lagrange est pratique pour faire 
+de belles courbes mais il demande beaucoup de calculs. En 
+mode interpol\'82e, le calcul est long, ce mode doit \'88tre utilis\'82 
+qu'en cas o\'97 une precision maximale est n\'82cessaire.\par
+En mode B\'82sier, le calcul n'est pas aussi gourmand en 
+temps.\par
+Dans les cas Lagrange et B\'82sier, une interpolation de 
+moyenne qualit\'82 ("semi-interpolation") peut \'88tre obtenue en 
+repassant la courbe en mode manuel avec l'interpolation 
+active.\par
+Jetez un oeil \'85 l'image pour plus de pr\'82cisions.\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\pard\s2\li170\fi794\ri283\tx1304\tx4365\f3\b\i\fs28 Note de l'auteur\par
+\pard\s3\qj\li170\fi340\ri57\tx1304\tx4478\f5\b0\i0\fs20\par
+\b Mountain\b0  est vraiment un logiciel qui me tient \'85 c\'B4ur, pas 
+moins d'un an et sept mois avant de sortir une version 
+"commercialisable" du soft. \b Rayban\b0  disait le 14 mai 1996 : 
+"\i Tes projets sont ambitieux et il est vrai que seul tu n'y 
+arriveras pas\i0 ", j'ai r\'82ellement commenc\'82 \b Mountain\b0  en mai 
+1997, s'il est vrai qu'il n'y a pas que moi sur ce logiciel, au 
+moins 95% du code est de mon cru. J'ai commenc\'82 \'85 
+m'int\'82resser \'85 l'animation quand je suis tomb\'82 sur un article 
+portant sur la lecture des fichiers FLC. De l\'85 est n\'82 le pack de 
+logiciel "\b FLX Work Pack\b0 " qui \'82tait vraiment utile \'85 l'\'82poque. Et 
+puis j'ai eu la chance d'entrevoir le logiciel \b Adobe Premiere\b0  
+sur un Mac, j'ai enregistr\'82 en dix minutes la fa\'87on dont 
+travaillait ce logiciel. Tout \'87a trottait dans ma t\'88te, je 
+r\'82fl\'82chissais \'85 la fa\'87on de programmer un tel logiciel, et puis le 
+1\super er\nosupersub  mai 1997 je me suis lanc\'82. J'ai \'82norm\'82ment appris en 
+mati\'8Are de programmation, j'ai eu beaucoup de contacts, 
+beaucoup de personnes int\'82ress\'82es, beaucoup de 
+d\'82couragements, d\'82ceptions, bugs invraisemblables et 
+satisfactions. Mais voil\'85 le r\'82sultat, j'esp\'8Are qu'il vous permettra 
+de cr\'82er de belles animations.\par
+\par
+\par
+\par
+\pard\qj\li170\fi340\ri57\tx2551\tx4478\tab\f3\fs40 R\'82mi Vanel}

@@ -1,0 +1,15 @@
+; PROJET pour module de chargement mountain
+
+*.imp
+
+.C [ -Y -2 ]
+.L [ -G -L -Y ];.L []
+.S [ -Y -2 ]
+
+=                  ; Liste des modules
+
+
+;Source principal
+*
+
+PCTOSLIB.LIB       ; TOS library

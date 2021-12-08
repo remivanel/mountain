@@ -1,0 +1,16 @@
+; PROJET pour module de sauvegarde mountain
+
+*.exp
+
+.C [ -Y -2 ]
+;.L [ -G -L -Y ].L []
+.S [ -Y -2 ]
+
+=                  ; Liste des modules
+
+
+;Source principal
+*
+cp_flh.c
+flh_lib.o
+PCSTDLIB.LIB       ; standard library

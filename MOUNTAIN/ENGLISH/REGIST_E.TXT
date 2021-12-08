@@ -1,0 +1,56 @@
+                   *****************************
+                   * Registering to  Mountain  *
+                   *****************************
+
+
+Price of the software:
+----------------------
+
+Full version: 450 FFrancs (69 EUR)
+
+
+How to register:
+----------------
+You must proceed by steps:
+
+* Start the program REG_MNT.PRG on your machine.
+* Keep the file REG_MNT.DTA thus created.
+* Copy this file on a floppy and send it to me together 
+  with your full details (including your email if possible),
+  your setup and the cheque, adressed to R‚mi Vanel
+  (see adress at the end of this text).
+- you can send the file by email if you want to spare 
+  a floppy disk:
+  vanel@club-internet.fr
+* Wait a few days, and you will receive the printed
+  manual of Mountain, with a special file mount_r.dta, which 
+  you will have to install in the module folder of the last 
+  demo version of Mountain, downloaded from my web site.
+- I can send you this file by email, I will spare a 
+  floppy disk and you will be able to use the full version 
+  of Mountain faster.
+* You can routinely download the last demo version of Mountain 
+  to update your software.
+  
++ KEEP PRECIOUSLY YOUR FILE MOUNT_R.DTA
++ NEVER GIVE IT TO ANYONE!!
+
+Contact me in case of problem.
+I cannot be held responsible for any damage caused by my 
+software.
+
+If you find that the price is too expensive for you, contact me, 
+perhaps it will be possible to agree on an exchange or a 
+reduction. I wouldn't want that someone willing to use 
+Mountain should be detered from it for a question of money.
+It is also possible to pay in some steps if you want to.
+
+R‚mi Vanel - The New Team
+
+Here is my adress:
+
+Vanel R‚mi
+Route de la Chambotte
+Pouilly
+73410 ALBENS
+FRANCE
