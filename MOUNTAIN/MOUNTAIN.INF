@@ -1,0 +1,52 @@
+#MOUNTAIN 101
+#use_nvdi 1
+#spd_fnt 12 5011 5003
+#Wf_pos 245 244
+#Wf_pos 139 82
+#Wf_pos 334 265
+#Wf_pos 143 86
+#Wf_pos 157 82
+#Wf_pos 653 126
+#Wf_pos 175 70
+#Wf_pos 157 90
+#Wf_pos 145 130
+#Wf_pos 147 58
+#Wf_pos 213 98
+#Wf_pos 57 50
+#Wf_pos 137 118
+#Wf_pos 149 114
+#Wf_pos 143 78
+#Wf_pos 103 110
+#Wf_pos 95 102
+#Wf_pos 141 98
+#Wf_pos 122 159
+#Wf_pos 109 82
+#Wf_pos 189 122
+#Wf_pos 115 102
+#Wf_pos 57 70
+#Wf_pos 171 130
+#Wf_pos 85 54
+#Wf_pos 31 82
+#Wf_pos 193 170
+#wind_objet 0 19 244 225
+#wind_projet 158 124 324 250
+#wind_tran 765 311 259 457
+#wind_visu 9 320 121 1 0 0
+#wind_piste 100 0 1 1 1 1 1 1 1 0 245 754 424 1
+#wind_preview 699 19
+#chemin_vext E:\IMAGES\M_PLAYER\M_PLAYER.PRG
+#chemin_viext E:\IMAGES\VIEWER\SHOWER.TTP
+#chemin_key C:\KEY\
+#chemin_mod C:\APPS\CODING\MNT\MODULES\
+#chemin_mpl E:\IMAGES\M_PLAYER\M_PLAYER.PRG
+#relief 1
+#z_info 1 0 686
+#free_mem 1 93 721
+#ultra_temps_reel 1
+#open_prj 1 0 1 1
+#ldg_inst 0 0
+#carte 8 0
+#n_alrt 1
+#draw_round 1
+#a_prev 0 0 1
+#m_smpte 0

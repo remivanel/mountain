@@ -1,0 +1,85 @@
+	Comment utiliser DL_1_2.IMP (module d'importation de fichiers DL1
+	ou DL2).
+	*****************************************************************
+
+
+	C'est un fichier PRG en code entiŠrement relogeable, il suffit de
+le charger en m‚moire.
+
+	Puisqu'il s'agit d'un PRG, il contient 28 octets d'en-tete que
+j'ai utilis‚ a des fins de copyrights.
+
+	En-tete:
+
+	+00	28 octets inutiles du PRG
+	+28	LONG id='DL12', 4 caractŠres de signature du module
+	+32	LONG ver='1.00', 4 caractŠres pour la version
+	+36	LONG work, taille du buffer de travail dont tu dois
+	r‚server une zone par anim ouverte avant d'appeler init_dl. Pour
+	l'instant, c'est 788 octets. Ainsi, chaque anim a son buffer, et
+	le module peut en traiter plusieurs a la fois.
+	+40 premier saut: bra init_dl
+	+44 second saut : bra read_frame
+	.... reste du fichier
+
+
+		Appel de INIT_DL
+	----------------
+
+	les variables pr‚c‚d‚es de '*' ont ‚t‚ ajout‚es:
+
+	WORD handle (handle du fichier ouvert, ENTREE)
+	LONG taille (taille totale du fichier, ENTREE)
+	WORD return ($FFFF si erreur, $0000 si fichier DL reconnu, RETOUR)
+	WORD x      (largeur anim, RETOUR)
+	WORD y      (hauteur anim, RETOUR)
+	LONG num    (nombre d'images, RETOUR)
+	LONG buf_size (taille buffer n‚cessaire pour 'read_frame', RETOUR)
+		-> ne vaut plus que 64000 car ecran s‚par‚!
+*	LONG work_adr (adresse buffer de travail, ENTREE)
+*	LONG id_string (adresse chaine info, RETOUR, 19 car maxi + '0')
+
+ Il suffit que A0.L contiennent l'adresse de cette stucture lors de
+l'appel … INIT_DL. Tous les registres sont sauves par ma routine.
+
+
+	Appel de READ_FRAME
+	-------------------
+
+	structure utilisee:
+	Les variables pr‚c‚d‚es de '*' ont ‚t‚ ajout‚es:
+
+	WORD handle (handle du fichier ouvert, ENTREE)
+	LONG old_index (index de l'image deja dans le buffer, ENTREE)
+	LONG new_index (index de l'image voulue, ENTREE)
+	LONG buffer (adresse buffer demande par INIT_DL, ENTREE)
+*	LONG ecran (adresse ecran au pixel prŠs, ENTREE)
+*	WORD largeur (largeur ecran en pixels, j'ajuste en octets, ENTREE)
+*	LONG work_adr (adresse buffer de travail: le mˆme qu'avant, ne pas
+			modifier le contenu!!!, ENTREE)
+
+	Puisqu'il n'y a
+pas de compression delta, la valeur old_index n'est utilis‚e que si il y a
+‚galit‚ avec new_index (donc, pas de nouveau chargement). Au premier
+appel, il convient de donner … old_index une valeur impossible (-1 par
+exemple).
+	Si le nombre d'image (LONG num) renvoy‚ par INIT_DL est 15, les
+indexs varient de 0 … 14. Aucun test de d‚passement n'est r‚alis‚, … toi
+de faire gaffe.
+
+	C'est … toi de r‚server le buffer (malloc) avec la taille buf_size
+qui sera toujours 128000 (pour le DL).
+
+	Pour l'appel il suffit de donner … A0.L l'adresse de ta structure,
+en retour, le buffer contient une image au format TC16 du Falcon:
+
+	RRRRRVVV VVVBBBBB (2 octets par pixel)
+
+	A toi de te d‚brouiller pour les conversions ‚ventuelles. Encore
+une fois, tous les registres sont sauv‚s par la routine.
+
+	Si tu le veux, on peut ajouter un mode 256 couleurs dans lequel je
+te renvois une palette ainsi que les pixels au format 1 octet=1 pixel. Car
+c'est le format du DL. J'imagine que si quelqu'un veut d‚monter un DL pour
+en faire un FLC, c'est idiot de tramer (avec perte de qualit‚) une image
+TC16 alors qu'elle ‚tait … l'origine en 256 couleurs. C'est toi qui voit.

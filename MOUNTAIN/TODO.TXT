@@ -1,0 +1,18 @@
+Mountain todo list :
+
+Urgent:
+
+* finir edition des timeSplines
+* activer preview precalcul‚e.
+* Transitions et effets en modules
+* Verifications dans modules de sauvegarde FLH
+* economie de memoire si plusieurs effets a la suite.
+* possibilite d'avoir une image/parametre pour les effets
+* Passage affichage du temps en SMPTE
+* Une timespline par variable dans Mouvement
+
+Nouvelles fonctions:
+
+* Editeur dessin/titrage
+* Les sons.
+* Interpreteur langage style lingo

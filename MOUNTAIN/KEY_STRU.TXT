@@ -1,0 +1,25 @@
+STRUCTURE D'UN FICHIER DE FEY FRAME FLH .KEY
+
+ENTETE :
+
+typedef struct
+{	long head;
+	int x;
+	int y;
+	int nb_img_in_flh;
+	int nb_img_in_key;
+	int frequence;
+	char nom_anim[10];
+	long *table_offset;
+}KEY_HEAD;
+
+PUIS LES POINTEURS SUR TOUTES LES IMAGES DANS LE FLH
+TAILLE nb_img_in_flh*4
+
+PUIS LES KEY FRAME COMPACTEE EN FLH BRUN
+CE SONT DES FRAMES COMPLETES (codage intel)
+
+PUIS LA TABLE DES POINTEURS SUR LES KEY FRAME
+TAILLE nb_img_in_key*4
+
+tout les word et long du fichier sont en motorola sauf les frames.

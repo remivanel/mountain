@@ -1,0 +1,96 @@
+
+MOUNTAIN.prg
+
+.C [ -Y -P ]
+;.C [ -Y -P -2 ]
+;.L [ -G -L -Y ].L []
+.S [ -Y -2 ]
+
+=                  ; Liste des modules
+
+PCSTART.O          ; startup code
+PCGEMLIB.LIB       ; AES and VDI library
+PCTOSLIB.LIB       ; TOS library
+PCSTDLIB.LIB       ; standard library
+PCFLTLIB.LIB       ; floating point library
+LDG.LIB				 ; librairies dynamique GEM
+
+;Source principal
+MOUNTAIN.C
+
+;Gestion des modules IMP/EXP
+MODULES.C
+
+;Fonctions complementaires
+SOME_FNC.C
+
+;gestion du projet
+PROJET.C
+
+;gestion des transitions
+TRANSIT.C
+
+;modules de transitions
+TRAN_MOD.C
+
+;gestion des fichiers FLH
+GEST_FLH.C
+
+;gestion des fichiers FLIC
+GEST_FLI.C
+
+;gestion des mouvement
+MOUVEMNT.C
+
+;gestion de la transparence
+TRANSP.C
+
+;Routines de compactage FLH
+CP_FLH.C
+
+;gestion de la fenetre objet graphique
+OBJETS.C
+
+;gestion de la fenetre des pistes
+PISTES.C
+
+;gestion de la fenetre de preview
+PREVIEW.C
+
+;gestion des effets
+GEFFETS.C
+
+;gestion de la fenetre de visualisation
+VISU.C
+
+;gestion des animations
+ANIM.C
+
+;export 
+EXPORT.C
+
+;effets une image
+EFFETS1.C
+
+;gestion ds times splines
+TIME_SPL.C
+
+;sources asm
+mountain.s
+cartes.s
+effets.s
+flic_lib.s
+z_intens.s
+creatbss.s
+effets.asm\as_effet.o
+
+select.c
+userdef.c
+flh_lib.s
+COOKIE.O
+
+WFORM300.LIB
+
+PCBGILIB.LIB       ; BGI library
+
+PCEXTLIB.LIB       ; extended library

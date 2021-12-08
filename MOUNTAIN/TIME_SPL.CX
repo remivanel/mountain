@@ -1,0 +1,1497 @@
+/********************MOUTAIN********************/
+/*****       GESTION DES TIMES-SPLINES      ****/
+/*****            Par Vanel R‚mi            ****/
+/***********************************************/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <tos.h>
+#include <math.h>
+#include "windform.h"  /* et vdi.h et aes.h */
+#include <string.h>
+#include "some_fnc.h"
+#include "transit.h"
+#include "time_spl.h"
+#include "geffets.h"
+#include "select.h"
+#include "mountain.h"
+#include "objets.h"
+#include "txts.h"
+#include "pistes.h"
+#include "projet.h"
+#include "mouvemnt.h"
+
+
+/* la boite de choix */
+extern WINDFORM_VAR ctim_var;		/* Choix d'une time spline */
+extern WINDFORM_VAR etim_var;		/* edition d'une time spline */
+
+/* proto */
+void set_popup(OBJECT *adr_form, int button, int option, int index);
+
+static void updt_tim_list(int draw);
+static void updt_chx_time_ass(int draw);
+static void set_point(void);
+static void draw_part_of_time(int x1,int x2);
+static void show_etim_pos(int x, int y);
+static void smooth_time_spline(TIME_SPLINE *la_spline, int force);
+static int get_mouse_point(int *x, int *y, int base_x, int base_y);
+static int cdecl ctim_draw_prev(PARMBLK *parmblock);
+static int cdecl etim_draw_main(PARMBLK *parmblock);
+static int cdecl etim_draw_limites(PARMBLK *parmblock);
+static void updt_etim_limites(int draw);
+static void move_limite(void);
+static void etim_fonction(int fnc);
+static void etim_effet(int fnc);
+static int find_point(int x, int y);
+static int add_point(int x, int y);
+static void eff_point(int point);
+static void make_coefs(TIME_SPLINE *la_spline, double coefs[]);
+static void calc_lagrange(void);
+
+int nb_time_spline = 1;	/* il y a TOUJOURS la lineaire */
+static int deb_aff_time_spline = 0;
+TIME_SPLINE *first_time_spline;
+int selected_spline=0;
+static USERBLK user_chxt_prev;
+static USERBLK user_etim_main;
+static USERBLK user_etim_limites;
+static char slct_nom[14]="";
+static point_1,point_2;			/* les limites d'action d'edition */
+static double tmp_coefs[MAX_POINT];
+/* variables de dialog */
+int *retour_index;
+WINDFORM_VAR *retour_wform;
+int retour_objet;
+
+/* edit time spline */
+static TIME_SPLINE *adr_edited_spline;
+static TIME_SPLINE tempo_spline;
+
+/* projet */
+extern PRJ_OBJ prj_obj[MAX_PRJ_OBJ];
+extern PROJET projet;
+extern MVT mvt[MAX_MVT];
+/* transitions */
+extern int nb_used_transit;	/* nombre de transitions UTILISEE */
+extern TRANSITION *transition[MAX_TRAN];
+extern PRJ_TRANSIT prj_transit[MAX_PRJ_TRAN];
+
+void init_chx_time(void)
+{	user_chxt_prev.ub_code = ctim_draw_prev;
+	ctim_var.adr_form[CTIM_PREV].ob_type = G_USERDEF;
+	user_chxt_prev.ub_parm = (long) ctim_var.adr_form[CTIM_PREV].ob_spec.userblk;
+	ctim_var.adr_form[CTIM_PREV].ob_spec.userblk = &user_chxt_prev;
+
+	user_etim_main.ub_code = etim_draw_main;
+	etim_var.adr_form[ETIM_MAIN].ob_type = G_USERDEF;
+	user_etim_main.ub_parm = (long) etim_var.adr_form[ETIM_MAIN].ob_spec.userblk;
+	etim_var.adr_form[ETIM_MAIN].ob_spec.userblk = &user_etim_main;
+
+	user_etim_limites.ub_code = etim_draw_limites;
+	etim_var.adr_form[ETIM_LIMITES].ob_type = G_USERDEF;
+	user_etim_limites.ub_parm = (long) etim_var.adr_form[ETIM_LIMITES].ob_spec.userblk;
+	etim_var.adr_form[ETIM_LIMITES].ob_spec.userblk = &user_etim_limites;
+	
+}  
+
+
+
+void form_etim(int event)
+{	WINDFORM_VAR *ptr_var = &etim_var;
+	int choix,dum,old;
+		
+	if (event == OPEN_DIAL)
+	{	adr_edited_spline = find_time_spline(selected_spline);
+		memcpy(&tempo_spline, adr_edited_spline, sizeof(TIME_SPLINE));
+		set_editable(ptr_var,ETIM_NAME,tempo_spline.nom,0);
+		point_1 = 0; point_2 = 255;
+		updt_etim_limites(0);
+		set_popup(ptr_var->adr_form, ETIM_MODE, tempo_spline.mode, POP_TIME_MODE);
+		open_dialog(ptr_var, T_TITR_EDIT_TIM, ETIM_NAME,-1);
+	}
+	
+	else 
+	{	choix = windial_do(ptr_var, event);
+		if(choix == CLOSE_DIAL)
+			choix = ETIM_ANN;		
+		switch(choix)
+		{	
+
+			case ETIM_LOAD :
+				load_spline(&tempo_spline);
+				set_editable(ptr_var,ETIM_NAME,tempo_spline.nom,1);
+				wf_change(ptr_var,choix,0,1);
+				break;
+
+			case ETIM_SAVE :
+				strcpy( tempo_spline.nom, ptr_var->adr_form[ETIM_NAME].ob_spec.tedinfo->te_ptext);
+				save_spline(&tempo_spline);
+				wf_change(ptr_var,choix,0,1);
+				break;
+
+			case ETIM_MODE :
+				old = tempo_spline.mode;
+				dum = pop_up(ptr_var,ETIM_MODE,POP_TIME_MODE);
+				if(dum<=0) dum=old;
+				if(dum==3)		/* empeche besier */
+				{	dum=2;
+					set_popup(ptr_var->adr_form, ETIM_MODE, 2, POP_TIME_MODE);
+					objc_draw(etim_var.adr_form, ETIM_MODE, MAX_DEPTH, x_desk, y_desk, w_desk, h_desk);
+				}
+				if(dum == 1 && old == 2)
+				{	graf_mouse(BUSYBEE,0);
+					/*for(dum=0;dum<255;dum++)
+						tempo_spline.valeur[dum] = (unsigned char)spline_comput(-1,&tempo_spline,dum,255,255); 
+					*/
+					make_coefs(&tempo_spline,tmp_coefs);
+					calc_lagrange();
+					graf_mouse(ARROW,0);
+					dum=1;
+				}
+				tempo_spline.mode = dum;
+				objc_draw(etim_var.adr_form, ETIM_MAIN, MAX_DEPTH, x_desk, y_desk, w_desk, h_desk);
+				break;
+				
+			case ETIM_RESET :
+				reset_time_spline(&tempo_spline);
+				point_1 = 0;		point_2 = 255;
+				updt_etim_limites(1);
+				set_popup(ptr_var->adr_form, ETIM_MODE, tempo_spline.mode, POP_TIME_MODE);
+				objc_draw(etim_var.adr_form, ETIM_MAIN, MAX_DEPTH, x_desk, y_desk, w_desk, h_desk);
+				objc_draw(etim_var.adr_form, ETIM_MODE, MAX_DEPTH, x_desk, y_desk, w_desk, h_desk);
+				wf_change(ptr_var,choix,0,1);
+				break;
+
+			case ETIM_SMOOTH1 :
+				if(tempo_spline.mode==1)
+				{	smooth_time_spline(&tempo_spline,1);
+					draw_part_of_time(point_1,point_2);
+					wf_change(ptr_var,choix,0,1);
+				}
+				break;
+			case ETIM_SMOOTH2 :
+				if(tempo_spline.mode==1)
+				{	smooth_time_spline(&tempo_spline,2);
+					draw_part_of_time(point_1,point_2);
+					wf_change(ptr_var,choix,0,1);
+				}
+				break;
+			case ETIM_SMOOTH3 :
+				if(tempo_spline.mode==1)
+				{	smooth_time_spline(&tempo_spline,3);
+					smooth_time_spline(&tempo_spline,1);
+					draw_part_of_time(point_1,point_2);
+				}
+				wf_change(ptr_var,choix,0,1);
+				break;
+		
+			case ETIM_LIMITES :
+				move_limite();
+				break;
+			
+			case ETIM_FNC :
+				if(tempo_spline.mode==1)
+				{	etim_fonction(pop_fly(FONCTIONS));
+					wf_change(ptr_var,choix,0,1);
+				}
+				break;
+
+			case ETIM_EFF :
+				if(tempo_spline.mode==1)
+				{	etim_effet(pop_fly(TIM_EFFET));
+					wf_change(ptr_var,choix,0,1);
+				}
+				break;
+
+			case ETIM_MAIN :
+				set_point();
+				break;
+				
+			case ETIM_OK :
+				strcpy( tempo_spline.nom, ptr_var->adr_form[ETIM_NAME].ob_spec.tedinfo->te_ptext);
+				memcpy(adr_edited_spline, &tempo_spline, sizeof(TIME_SPLINE));
+				close_dialog(ptr_var);
+				evnt_timer(1, 0);
+				updt_tim_list(1);
+				wf_change(ptr_var,choix,0,1);
+				break;
+			case ETIM_ANN :
+				close_dialog(ptr_var);
+				wf_change(ptr_var,choix,0,1);
+				break;
+		}
+	}
+}
+
+void form_ctim(int event)
+{	WINDFORM_VAR *ptr_var = &ctim_var;
+	int choix,dum;
+		
+	if (event == OPEN_DIAL)
+	{	selected_spline = min(*retour_index,nb_time_spline-1);
+		updt_tim_list(FALSE);
+		updt_chx_time_ass(FALSE);
+		
+		open_dialog(ptr_var, T_TITR_CHX_TIM, 0,-1);
+	}
+	
+	else 
+	{	choix = windial_do(ptr_var, event);
+		if(choix == CLOSE_DIAL)
+			choix = CTIM_ANN;		
+		switch(choix)
+		{	
+			case CTIM_NEW :
+				dum = new_time_spline();
+				if(dum>0)
+				{	selected_spline = dum;
+					if(selected_spline >= deb_aff_time_spline+NB_CHX_TIM)
+						deb_aff_time_spline = selected_spline - NB_CHX_TIM+1; 
+					updt_tim_list(TRUE);
+					updt_chx_time_ass(TRUE);
+					objc_draw(ctim_var.adr_form, CTIM_PREV, MAX_DEPTH, x_desk, y_desk, w_desk, h_desk);
+				}
+				wf_change(ptr_var,choix,0,1);
+				break;
+
+			case CTIM_DOWN :
+				if(deb_aff_time_spline+NB_CHX_TIM < nb_time_spline)
+				{	deb_aff_time_spline++;
+					updt_tim_list(TRUE);
+					updt_chx_time_ass(TRUE);
+				}
+				break;
+
+			case CTIM_UP :
+				if(deb_aff_time_spline)
+				{	deb_aff_time_spline--;
+					updt_tim_list(TRUE);
+					updt_chx_time_ass(TRUE);
+				}
+				break;
+
+			case CTIM_LOAD :
+				add_loaded_spline();
+				wf_change(ptr_var,choix,0,1);
+				break;
+
+			case CTIM_SAV :
+				save_spline(find_time_spline(selected_spline));
+				wf_change(ptr_var,choix,0,1);
+				break;
+
+			case CTIM_PREV :
+			case CTIM_EDIT :
+				if(selected_spline)
+					form_etim(OPEN_DIAL);
+				wf_change(ptr_var,choix,0,1);
+				break;
+			case CTIME_EFF :
+				delete_spline(selected_spline);
+				if(selected_spline == nb_time_spline)
+				{	selected_spline--;
+					objc_draw(ctim_var.adr_form, CTIM_PREV, MAX_DEPTH, x_desk, y_desk, w_desk, h_desk);
+				}
+				updt_tim_list(TRUE);
+				updt_chx_time_ass(TRUE);
+				wf_change(ptr_var,choix,0,1);
+				break;
+
+			case CTIM_OK :
+				*retour_index = selected_spline;
+				copy_spline_name(selected_spline,
+						retour_wform->adr_form[retour_objet].ob_spec.tedinfo->te_ptext);
+				wf_draw(retour_wform,retour_objet);
+			case CTIM_ANN :
+				close_dialog(ptr_var);
+				wf_change(ptr_var,choix,0,1);
+				break;
+			default :
+				if(choix>=CTIM_PREM && choix < CTIM_PREM + NB_CHX_TIM)
+				{	if(choix - CTIM_PREM  + deb_aff_time_spline < nb_time_spline)
+					{	if(selected_spline != choix - CTIM_PREM  + deb_aff_time_spline)
+						{	selected_spline = choix - CTIM_PREM  + deb_aff_time_spline;
+							updt_tim_list(TRUE);
+							objc_draw(ctim_var.adr_form, CTIM_PREV, MAX_DEPTH, x_desk, y_desk, w_desk, h_desk);
+						}
+					}
+				}
+				break;
+		}
+	}
+}
+
+static void etim_fonction(int fnc)
+{	OBJECT *adr_boite;
+	int x,y,w,h,choix,i,j;
+	int val1,val2,val3,val4,point_demi,val_demi;
+	double result;
+	
+	if(fnc == -1)
+		return;
+	
+	rsrc_gaddr(R_TREE, PTIME, &adr_boite);
+	
+	wind_update(BEG_MCTRL);				/* Bloquer menu */
+	
+	switch(fnc)
+	{	/* constante */
+		case 1 : strcpy(adr_boite[PTIM_TITRE].ob_spec.tedinfo->te_ptext,T_CREE_CTE);
+					strcpy(adr_boite[PTIM_NOM1].ob_spec.tedinfo->te_ptext,T_VALEUR);
+					adr_boite[PTIM_NOM2].ob_flags = HIDETREE;
+					adr_boite[PTIM_NOM3].ob_flags = HIDETREE;
+					adr_boite[PTIM_NOM4].ob_flags = HIDETREE;
+					adr_boite[PTIM_VAL2].ob_flags = HIDETREE;
+					adr_boite[PTIM_VAL3].ob_flags = HIDETREE;
+					adr_boite[PTIM_VAL4].ob_flags = HIDETREE;
+					break;
+		/* ligne */
+		case 2 : strcpy(adr_boite[PTIM_TITRE].ob_spec.tedinfo->te_ptext,T_CREE_LIGNE);
+					strcpy(adr_boite[PTIM_NOM1].ob_spec.tedinfo->te_ptext,T_DEPART);
+					strcpy(adr_boite[PTIM_NOM2].ob_spec.tedinfo->te_ptext,T_ARRIVEE);
+					adr_boite[PTIM_NOM2].ob_flags = FLAGS10;
+					adr_boite[PTIM_NOM3].ob_flags = HIDETREE;
+					adr_boite[PTIM_NOM4].ob_flags = HIDETREE;
+					adr_boite[PTIM_VAL2].ob_flags = EDITABLE|FLAGS10;
+					adr_boite[PTIM_VAL3].ob_flags = HIDETREE;
+					adr_boite[PTIM_VAL4].ob_flags = HIDETREE;
+					break;
+		/* Courbe exp */
+		case 6 :
+		case 5 :
+		case 4 :
+		case 3 : strcpy(adr_boite[PTIM_TITRE].ob_spec.tedinfo->te_ptext,T_COURBE_POLY);
+					strcpy(adr_boite[PTIM_NOM1].ob_spec.tedinfo->te_ptext,T_DEPART);
+					strcpy(adr_boite[PTIM_NOM2].ob_spec.tedinfo->te_ptext,T_ARRIVEE);
+					strcpy(adr_boite[PTIM_NOM3].ob_spec.tedinfo->te_ptext,T_FORCE);
+					adr_boite[PTIM_NOM2].ob_flags = FLAGS10;
+					adr_boite[PTIM_NOM3].ob_flags = FLAGS10;
+					adr_boite[PTIM_NOM4].ob_flags = HIDETREE;
+					adr_boite[PTIM_VAL2].ob_flags = EDITABLE|FLAGS10;
+					adr_boite[PTIM_VAL3].ob_flags = EDITABLE|FLAGS10;
+					adr_boite[PTIM_VAL4].ob_flags = HIDETREE;
+					break;
+		case 7 : strcpy(adr_boite[PTIM_TITRE].ob_spec.tedinfo->te_ptext,T_SIN_CURVE);
+					strcpy(adr_boite[PTIM_NOM1].ob_spec.tedinfo->te_ptext,T_SIN_MINI);
+					strcpy(adr_boite[PTIM_NOM2].ob_spec.tedinfo->te_ptext,T_SIN_MAXI);
+					strcpy(adr_boite[PTIM_NOM3].ob_spec.tedinfo->te_ptext,T_NB_PERIODES);
+					strcpy(adr_boite[PTIM_NOM4].ob_spec.tedinfo->te_ptext,T_ORG_DECAL);
+					adr_boite[PTIM_NOM2].ob_flags = FLAGS10;
+					adr_boite[PTIM_NOM3].ob_flags = FLAGS10;
+					adr_boite[PTIM_NOM4].ob_flags = FLAGS10;
+					adr_boite[PTIM_VAL2].ob_flags = EDITABLE|FLAGS10;
+					adr_boite[PTIM_VAL3].ob_flags = EDITABLE|FLAGS10;
+					adr_boite[PTIM_VAL4].ob_flags = EDITABLE|FLAGS10;
+					break;
+		case 8 : strcpy(adr_boite[PTIM_TITRE].ob_spec.tedinfo->te_ptext,T_RANDOM);
+					strcpy(adr_boite[PTIM_NOM1].ob_spec.tedinfo->te_ptext,T_SIN_MINI);
+					strcpy(adr_boite[PTIM_NOM2].ob_spec.tedinfo->te_ptext,T_SIN_MAXI);
+					adr_boite[PTIM_NOM2].ob_flags = FLAGS10;
+					adr_boite[PTIM_NOM3].ob_flags = HIDETREE;
+					adr_boite[PTIM_NOM4].ob_flags = HIDETREE;
+					adr_boite[PTIM_VAL2].ob_flags = EDITABLE|FLAGS10;
+					adr_boite[PTIM_VAL3].ob_flags = HIDETREE;
+					adr_boite[PTIM_VAL4].ob_flags = HIDETREE;
+					break;
+
+	}
+	
+	form_center (adr_boite , &x ,&y, &w ,&h);
+	x -= 3;	y -= 3;	w += 6;	h += 6;
+	form_dial (FMD_START, 0, 0, 0, 0, x, y, w, h);
+	objc_draw (adr_boite, 0, MAX_DEPTH, x, y, w, h);
+	
+	
+	choix = form_do(adr_boite,0);
+	
+	adr_boite[choix].ob_state = NORMAL;
+	
+	if(choix == PTIM_ANN)
+	{	wind_update(END_MCTRL);	 /* D‚bloquer menu */
+		form_dial (FMD_FINISH, 0, 0, 0, 0, x, y, w, h);
+		return;
+	}
+	
+	val1 = atoi(adr_boite[PTIM_VAL1].ob_spec.tedinfo->te_ptext);
+	val2 = atoi(adr_boite[PTIM_VAL2].ob_spec.tedinfo->te_ptext);
+	val3 = atoi(adr_boite[PTIM_VAL3].ob_spec.tedinfo->te_ptext);
+	val4 = atoi(adr_boite[PTIM_VAL4].ob_spec.tedinfo->te_ptext);
+	
+	val1=min(val1,255); val1=max(val1,0);
+	val2=min(val2,255); val2=max(val2,0);
+	switch(fnc)
+	{	/* constante */
+		case 1 : 
+					for(i=point_1;i<=point_2;i++)
+						tempo_spline.valeur[i] = val1;
+					break;
+		/* Ligne */
+		case 2 :	
+					for(i=point_1;i<=point_2;i++)
+						tempo_spline.valeur[i] = (int)(val1+((long)(i-point_1)*(val2-val1))/(point_2-point_1));
+					break;
+		/* Courbe exp */
+		case 3 : 
+					val3=min(val3,20); val3=max(val3,1);
+					for(i=point_1;i<=point_2;i++)
+					{	result = (double)(val2-val1)*pow( ((double)i-point_1)/((double)point_2-point_1), val3);
+						tempo_spline.valeur[i] = val1 + (int)result;
+					}break;
+		/* Courbe exp */
+		case 4 : 
+					val3=min(val3,20); val3=max(val3,1);
+					for(i=point_1;i<=point_2;i++)
+					{	result = (double)(val2-val1)*pow( ((double)i-point_1)/((double)point_2-point_1), val3);
+						tempo_spline.valeur[point_2-(i-point_1)] = val1 + ((val2-val1)-(int)result);
+					}break;
+		/* Courbe exp */
+		case 5 : 
+					val3=min(val3,20); val3=max(val3,1);
+					point_demi = point_1 + (point_2-point_1)/2;
+					val_demi = val1 + (val2-val1)/2;
+					for(i=point_1;i<=point_demi;i++)
+					{	result = (double)(val_demi-val1)*pow( ((double)i-point_1)/((double)point_demi-point_1), val3);
+						tempo_spline.valeur[i] = val1 + (int)result;
+						tempo_spline.valeur[point_2-(i-point_1)] = val1 + ((val2-val1)-(int)result);
+					}break;
+		/* Courbe exp */
+		case 6 : 
+					val3=min(val3,20); val3=max(val3,1);
+					point_demi = point_1 + (point_2-point_1)/2;
+					val_demi = val1 + (val2-val1)/2;
+					for(i=point_1;i<=point_demi;i++)
+					{	result = (double)(val_demi-val1)*pow( ((double)i-point_1)/((double)point_demi-point_1), val3);
+						j=point_demi-(i-point_1);
+						tempo_spline.valeur[j] = val1 + ((val_demi-val1)-(int)result);
+						tempo_spline.valeur[point_2-(j-point_1)] = val1 + ((val2-val1)-((val_demi-val1)-(int)result));
+					}break;
+		/* Courbe sin */
+		case 7 : val1=min(val1,255); val1=max(val1,0);
+					val2=min(val2,255); val2=max(val2,0);
+					val3=min(val3,40); val3=max(val3,1);
+					val_demi = val1 + (val2-val1)/2;
+					for(i=point_1;i<=point_2;i++)
+					{	result = (double)(val2-val1)*sin( M_PI*(double)val4/180 +  ((M_PI*val3)/2)*((double)i-point_1)/((double)point_2-point_1));
+						tempo_spline.valeur[i] = val_demi + (int)result/2;
+					}break;
+		/* random */
+		case 8 : 
+					for(i=point_1;i<=point_2;i++)
+					{	choix =  (unsigned char)(rand()>>2);
+						tempo_spline.valeur[i] = val1 + (choix*(val2-val1))/255;
+					}
+					break;
+	}
+
+	
+	wind_update(END_MCTRL);	 /* D‚bloquer menu */
+
+	form_dial (FMD_FINISH, 0, 0, 0, 0, x, y, w, h);
+	draw_part_of_time(point_1,point_2);
+	
+}
+
+static void etim_effet(int fnc)
+{	OBJECT *adr_boite;
+	int x,y,w,h,choix,i;
+	int val1,val2,val3,val4,point_demi,val_demi;
+	double result;
+
+	if(fnc == -1)
+		return;
+	
+	rsrc_gaddr(R_TREE, PTIME, &adr_boite);
+	
+	switch(fnc)
+	{	/* invers GD */
+		case 1 :	
+					for(i=point_1;i<=(point_1+point_2)/2;i++)
+					{	val_demi = tempo_spline.valeur[i];
+						tempo_spline.valeur[i] = tempo_spline.valeur[point_2-(i-point_1)];
+						tempo_spline.valeur[point_2-(i-point_1)] = val_demi;
+					}
+					draw_part_of_time(point_1,point_2);
+					return;
+		/* invers HB */
+		case 2 :	
+					for(i=point_1;i<=point_2;i++)
+						tempo_spline.valeur[i] = 255-tempo_spline.valeur[i];
+					draw_part_of_time(point_1,point_2);
+					return;
+	}
+	
+	/*****************/
+	if(fnc>2)
+		return;
+	
+	wind_update(BEG_MCTRL);				/* Bloquer menu */
+	form_center (adr_boite , &x ,&y, &w ,&h);
+	x -= 3;	y -= 3;	w += 6;	h += 6;
+	form_dial (FMD_START, 0, 0, 0, 0, x, y, w, h);
+	objc_draw (adr_boite, 0, MAX_DEPTH, x, y, w, h);
+	
+	
+	choix = form_do(adr_boite,0);
+	
+	adr_boite[choix].ob_state = NORMAL;
+	
+	if(choix == PTIM_ANN)
+	{	wind_update(END_MCTRL);	 /* D‚bloquer menu */
+		form_dial (FMD_FINISH, 0, 0, 0, 0, x, y, w, h);
+		return;
+	}
+	
+	val1 = atoi(adr_boite[PTIM_VAL1].ob_spec.tedinfo->te_ptext);
+	val2 = atoi(adr_boite[PTIM_VAL2].ob_spec.tedinfo->te_ptext);
+	val3 = atoi(adr_boite[PTIM_VAL3].ob_spec.tedinfo->te_ptext);
+	val4 = atoi(adr_boite[PTIM_VAL4].ob_spec.tedinfo->te_ptext);
+	
+	
+/*	switch(fnc)
+	{	
+	}
+*/
+	
+	wind_update(END_MCTRL);	 /* D‚bloquer menu */
+
+	form_dial (FMD_FINISH, 0, 0, 0, 0, x, y, w, h);
+	draw_part_of_time(point_1,point_2);
+	
+}
+
+
+static void move_limite(void)
+{	int mx,my,mk,dum,which,decal,old,pos;
+	int base_x;
+
+	base_x = etim_var.adr_form[ETIM_LIMITES].ob_x + etim_var.adr_form[0].ob_x;
+	
+	graf_mkstate(&mx,&my,&mk,&dum);
+
+	if(mx< base_x + (point_1 + point_2)/2)
+	{	which = 0;		/* on modifie le debut */
+		decal = mx - (base_x + point_1);
+		old = point_1;
+	}else
+	{	which = 1;
+		decal = mx - (base_x + point_2);
+		old = point_2;
+	}
+	
+	
+	pos = old;
+	graf_mkstate(&mx,&my,&mk,&dum);
+	
+	do
+	{	mx = mx-decal+1;
+		pos = mx - base_x;
+		if(!which)
+		{	pos = max(0,pos);
+			pos = min(pos,point_2-4);
+		}else
+		{	pos++;
+			pos = max(point_1+4,pos);
+			pos = min(pos,255);
+		}
+		if(pos != old)
+		{	if(!which)
+			{	point_1 = pos;
+				Vsync();
+				updt_etim_limites(1);
+			}
+			else
+			{	point_2 = pos;
+				Vsync();
+				updt_etim_limites(1);
+			}
+			old=pos;
+		}
+		graf_mkstate(&mx,&my,&mk,&dum);
+	}while(mk);
+	
+	
+}
+
+static void updt_etim_limites(int draw)
+{	
+	itoa(point_1,etim_var.adr_form[ETIM_1PT].ob_spec.tedinfo->te_ptext,10);
+	itoa(point_2,etim_var.adr_form[ETIM_2PT].ob_spec.tedinfo->te_ptext,10);
+	
+	if(draw)
+	{	objc_draw(etim_var.adr_form, ETIM_LIMITES, MAX_DEPTH, x_desk, y_desk, w_desk, h_desk);
+		objc_draw(etim_var.adr_form, ETIM_1PT, MAX_DEPTH, x_desk, y_desk, w_desk, h_desk);
+		objc_draw(etim_var.adr_form, ETIM_2PT, MAX_DEPTH, x_desk, y_desk, w_desk, h_desk);
+	}
+}
+
+static void set_point(void)
+{	int base_x,base_y,i,point;
+	int x,y,mk,old_x=-1,old_y=-1;
+	int x1,x2,y1,y2,dum;
+	
+	base_x = etim_var.adr_form[ETIM_MAIN].ob_x + etim_var.adr_form[0].ob_x;
+	base_y = etim_var.adr_form[ETIM_MAIN].ob_y + etim_var.adr_form[0].ob_y;
+	
+	mk = get_mouse_point(&x, &y, base_x, base_y);
+	
+	if(tempo_spline.mode == 1)
+	{	do
+		{	show_etim_pos(x,y);
+			if(old_x==-1)
+			{	tempo_spline.valeur[x] = y;
+				draw_part_of_time(x,x);
+			}else
+			{	if(x != old_y || old_y != y)
+				{	if(x>old_x)
+					{	x1=old_x; x2=x;
+						y1=old_y; y2=y;
+					}else if(x<old_x)
+					{	x2=old_x; x1=x;
+						y2=old_y; y1=y;
+					}else
+					{	tempo_spline.valeur[x] = y;
+						draw_part_of_time(x,x);
+						goto annule;
+					}
+					for(i=x1 ; i<=x2 ; i++)
+					{	tempo_spline.valeur[i] = (int)(y1+((long)(i-x1)*(y2-y1))/(x2-x1));
+					}
+					draw_part_of_time(x1,x2);
+				}
+			}
+			annule:;
+			old_x = x;
+			old_y = y;
+			mk = get_mouse_point(&x, &y, base_x, base_y);
+		}while(mk==1);
+	}
+	if(tempo_spline.mode == 2)
+	{	graf_mkstate(&dum,&dum,&mk,&i);
+		point = find_point(x,y);
+		if( i & (K_RSHIFT | K_LSHIFT))
+		{	if(point != -1)
+			{	eff_point(point);
+				objc_draw(etim_var.adr_form, ETIM_MAIN, MAX_DEPTH, x_desk, y_desk, w_desk, h_desk);
+			}
+			return;
+		}
+		if(point == -1)
+		{	point = add_point(x,y);
+			if(point == -1)
+				return;
+			objc_draw(etim_var.adr_form, ETIM_MAIN, MAX_DEPTH, x_desk, y_desk, w_desk, h_desk);
+		}
+		do
+		{	
+			if(x != old_x || y != old_y)
+			{	show_etim_pos(x,y);
+				old_x = x;
+				old_y = y;
+
+				if(point == 0)
+					x=0;
+				else if(point == tempo_spline.nb_points-1)
+					x=255;
+				else
+				{	if(x<tempo_spline.point[point-1][0]+1)
+						x = tempo_spline.point[point-1][0]+1;
+					if(x>tempo_spline.point[point+1][0]-1)
+						x = tempo_spline.point[point+1][0]-1;
+				}
+				tempo_spline.point[point][0] = x;
+				tempo_spline.point[point][1] = y;
+				draw_part_of_time(point,0);
+			
+			}
+			mk = get_mouse_point(&x, &y, base_x, base_y);
+		}while(mk==1);
+	
+	}
+	
+	objc_draw(etim_var.adr_form, ETIM_MAIN, MAX_DEPTH, x_desk, y_desk, w_desk, h_desk);
+}
+
+static void eff_point(int point)
+{	
+	if(point == 0 || point == tempo_spline.nb_points-1) /* pas le premier ni le dernier !! */
+		return;
+	
+	memcpy(tempo_spline.point[point], tempo_spline.point[point+1], (tempo_spline.nb_points - point - 1) * 2);
+	tempo_spline.nb_points--;
+}
+
+static int add_point(int x, int y)
+{	int point=-1,i;
+	
+	if(tempo_spline.nb_points == MAX_POINT)
+		return -1;
+	
+	for(i=0;i<tempo_spline.nb_points-1;i++)
+	{	if(x>tempo_spline.point[i][0] && x<tempo_spline.point[i+1][0])
+			point=i;
+	}
+	if(point==-1)
+		return -1;
+	
+	for(i=tempo_spline.nb_points-1;i>point;i--)
+	{	tempo_spline.point[i+1][0] = tempo_spline.point[i][0];
+		tempo_spline.point[i+1][1] = tempo_spline.point[i][1];
+	}
+	tempo_spline.nb_points++;
+	tempo_spline.point[point+1][0]=x;
+	tempo_spline.point[point+1][1]=y;
+
+	return point+1;
+}
+
+static int find_point(int x, int y)
+{	int i;
+	
+	for(i=0;i<tempo_spline.nb_points;i++)
+	{	if(x>tempo_spline.point[i][0]-5 && x<tempo_spline.point[i][0]+5 && 
+			y>tempo_spline.point[i][1]-5 && y<tempo_spline.point[i][1]+5 )
+			return i;
+	}
+	return -1;
+}
+
+
+static void show_etim_pos(int x, int y)
+{	
+	sprintf(etim_var.adr_form[ETIM_POS].ob_spec.tedinfo->te_ptext,
+				"X:%d Y:%d",x,y);
+	objc_draw(etim_var.adr_form, ETIM_POS, MAX_DEPTH, x_desk, y_desk, w_desk, h_desk);
+}
+
+/* fonction qui redessine une partie de la time spline
+en cours d'edition  
+mode manuel : x1=debut x2=fin 
+mode ligne  : x1=point        */
+
+static void draw_part_of_time(int x1,int x2)
+{	int xy[4],i,old;
+	int base_x, base_y;
+	int x,y,w,h,deb,fin;
+	GRECT real;
+	
+	base_x = etim_var.adr_form[ETIM_MAIN].ob_x + etim_var.adr_form[0].ob_x;
+	base_y = etim_var.adr_form[ETIM_MAIN].ob_y + etim_var.adr_form[0].ob_y;
+
+	vsl_color(vdi_handle,BLACK);
+	
+	v_hide_c(vdi_handle);
+	if(tempo_spline.mode==1)
+	{	if(x1)		x1--;
+		if(x2!=255)	x2++;
+	
+		Vsync();
+		rect_full(base_x+x1,base_y,x2-x1+1,256, WHITE);
+		if(x1)		x1--;
+		if(x2!=255)	x2++;
+		old = base_y + 256 - tempo_spline.valeur[x1]-1;
+		for(i=x1+1; i<=x2; i++)
+		{	xy[0] = base_x+i-1;		xy[1] = old;
+			xy[2] = base_x+i;			xy[3] = base_y + 256 - tempo_spline.valeur[i]-1;
+			old = xy[3];
+			
+			v_pline(vdi_handle,2,xy);	
+		}	
+	}else if(tempo_spline.mode==2)
+	{	real.g_x = base_x-1;
+		real.g_y = base_y;
+		real.g_w = 258;
+		real.g_h = 256;
+		set_clip(1, &real);
+
+		if(x1==0)
+		{	rect_full(base_x-1,base_y,tempo_spline.point[1][0]+3,256, WHITE);
+			deb=0;fin=2;
+		}else if(x1==tempo_spline.nb_points-1)
+		{	rect_full(base_x+tempo_spline.point[x1-1][0]-1,base_y,256-tempo_spline.point[x1-1][0]+1,256, WHITE);
+			deb=x1-2;fin=x1;
+		}else 
+		{	rect_full(base_x+tempo_spline.point[x1-1][0]-1,base_y,tempo_spline.point[x1+1][0]-tempo_spline.point[x1-1][0]+3,256, WHITE);
+			deb=x1-2; fin=x1+2;
+		}
+		vsm_type(vdi_handle,4);
+		vsm_height(vdi_handle,6);
+		vsm_color(vdi_handle,LBLUE);
+
+		if(deb<0) deb=0;
+		if(fin>tempo_spline.nb_points-1) fin=tempo_spline.nb_points-1;
+		
+		for(i=deb;i<fin;i++)
+		{	x=tempo_spline.point[i][0];
+			y=tempo_spline.point[i][1];
+			w=tempo_spline.point[i+1][0]-x+1;
+			h=tempo_spline.point[i+1][1]-y-1;
+			x+=base_x;
+			y=255-y;
+			y+=base_y;
+			
+			if(i != tempo_spline.nb_points-1)
+				ligne(x,y,w,-h,BLACK);
+			xy[0]=x;			xy[1]=y;
+			v_pmarker(vdi_handle,1,xy);
+		}
+		set_clip(0,0);
+	}
+	v_show_c(vdi_handle, 1);
+}
+
+static int get_mouse_point(int *x, int *y, int base_x, int base_y)
+{	int mx,my,mk,dum;
+
+	graf_mkstate(&mx,&my,&mk,&dum);
+	*x = mx - base_x;
+	*y = 256 - (my - base_y);
+	
+	*x = min(255,*x);
+	*x = max(0,*x);
+	*y = min(255,*y);
+	*y = max(0,*y);
+	
+	return mk;
+}
+
+void save_spline(TIME_SPLINE *la_spline)
+{	CHEMIN chm_spl;
+	int bout,handle;
+	char pth[200]="\\*.TSP",nom[14];
+	long head_spl='MTIM';
+	int size;
+	
+	Fselecteur(&chm_spl,pth,slct_nom,&bout,T_SAVE_A_SPLINE);
+	
+	if(bout && slct_nom[0])
+	{	Dsetdrv(chm_spl.chemin[0] - 'A');
+		Dsetpath(chm_spl.chemin);
+		
+		find_name(chm_spl.complet,nom);
+		strcpy(pth, chm_spl.chemin);
+		strcat(pth, nom);
+		strcat(pth, ".TSP");		/* on impose l'extention TSP */
+
+		
+		handle = (int)Fcreate(pth,0);
+		if(handle>=0)
+		{	Fwrite(handle,4,&head_spl),
+			size = (int)sizeof(TIME_SPLINE);
+			Fwrite(handle,2,&size);
+			Fwrite(handle,size,la_spline);
+			Fclose(handle);
+		}
+	}
+}
+
+int load_spline(TIME_SPLINE *la_spline)
+{	CHEMIN chm_spl;
+	int bout,handle;
+	char pth[200]="\\*.TSP";
+	long head_spl;
+	int size;
+	
+	Fselecteur(&chm_spl,pth,slct_nom,&bout,T_LOAD_A_SPLINE);
+	
+	if(bout && slct_nom[0])
+	{	Dsetdrv(chm_spl.chemin[0] - 'A');
+		Dsetpath(chm_spl.chemin);
+		
+		handle = (int)Fopen(chm_spl.complet,FO_READ);
+		if(handle>=0)
+		{	Fread(handle,4,&head_spl);
+			if(head_spl == 'MTIM')
+			{	
+				Fread(handle,2,&size);
+				if(size == (int)sizeof(TIME_SPLINE))
+				{	
+					Fread(handle,size,la_spline);
+					Fclose(handle);
+					return 1;
+				}else
+					super_alert(1,3,T_IMCOMP_TSPL);
+			}else
+				super_alert(1,3,T_NOT_A_TSPL);
+		}
+	}
+	return 0;
+}
+
+void add_loaded_spline(void)
+{	TIME_SPLINE *la_spline,*last_spline;
+	
+	la_spline = malloc(sizeof(TIME_SPLINE));
+	if(!la_spline)
+	{	super_alert(1,3,T_NO_MEM_FOR_NEW_SPLINE);
+		return;
+	}
+	
+	if(load_spline(la_spline))
+	{	last_spline = find_time_spline(nb_time_spline-1);
+		last_spline->next_time_spline = la_spline;
+		la_spline->next_time_spline = 0;
+		nb_time_spline++;
+		selected_spline = nb_time_spline-1;
+		if(selected_spline >= deb_aff_time_spline+NB_CHX_TIM)
+			deb_aff_time_spline = selected_spline - NB_CHX_TIM+1; 
+		updt_tim_list(TRUE);
+		updt_chx_time_ass(TRUE);
+		objc_draw(ctim_var.adr_form, CTIM_PREV, MAX_DEPTH, x_desk, y_desk, w_desk, h_desk);
+
+	}else
+		free(la_spline);
+}
+	
+static void updt_chx_time_ass(int draw)
+{	int y,h;
+	OBJECT *boite;
+	
+	boite = ctim_var.adr_form;
+
+	if(nb_time_spline <= NB_CHX_TIM )
+	{	boite[CTIM_ASS].ob_height = boite[CTIM_FON].ob_height-2;
+		boite[CTIM_ASS].ob_y = 1;
+	}else
+	{	h = (int)( ((long)(boite[CTIM_FON].ob_height-2)*NB_CHX_TIM)/nb_time_spline );
+		boite[CTIM_ASS].ob_height = h;
+	
+		h = (boite[CTIM_FON].ob_height-2) - h;	/* la place restante */
+		y = 1+(int)( ((long)deb_aff_time_spline*h)/(nb_time_spline-NB_CHX_TIM) );
+		boite[CTIM_ASS].ob_y = y;
+	}
+	
+	if(draw)
+		objc_draw(boite, CTIM_FON, MAX_DEPTH, x_desk, y_desk, w_desk, h_desk);
+}
+
+static void updt_tim_list(int draw)
+{	int i;
+	OBJECT *boite;
+	TIME_SPLINE *cur_spline=0;
+	
+	boite = ctim_var.adr_form;
+	
+	for(i=0; i<NB_CHX_TIM ; i++)
+	{	
+		if(selected_spline == i+deb_aff_time_spline)
+			boite[CTIM_PREM+i].ob_state = SELECTED;
+		else
+			boite[CTIM_PREM+i].ob_state = NORMAL;
+		
+		if(i+deb_aff_time_spline==0)
+		{	strpcpy_force(boite[CTIM_PREM].ob_spec.tedinfo->te_ptext,T_LINEAR_SPLINE,31, ' ' );
+			if(draw)
+				objc_draw(boite, CTIM_PREM, MAX_DEPTH, x_desk, y_desk, w_desk, h_desk);
+		}else
+		{	if(i+deb_aff_time_spline<nb_time_spline)
+			{	if(cur_spline==0)
+					cur_spline = find_time_spline(i+deb_aff_time_spline);
+				else
+					cur_spline = cur_spline->next_time_spline;
+				strpcpy_force(boite[CTIM_PREM+i].ob_spec.tedinfo->te_ptext, cur_spline->nom,31, ' ' );
+			}else
+				strpcpy_force(boite[CTIM_PREM+i].ob_spec.tedinfo->te_ptext, "",31, ' ' );
+			if(draw)
+				objc_draw(boite, CTIM_PREM+i, MAX_DEPTH, x_desk, y_desk, w_desk, h_desk);
+		}
+	}
+}
+
+/* cree une nouvelle time spline
+   reserve la memoire, et retourne l'indice.
+   retour negatif si erreur */
+
+int new_time_spline(void)
+{	TIME_SPLINE *la_spline,*last_spline;
+	
+	la_spline = malloc(sizeof(TIME_SPLINE));
+	if(!la_spline)
+	{	super_alert(1,3,T_NO_MEM_FOR_NEW_SPLINE);
+		return -1;
+	}
+	
+	reset_time_spline(la_spline);		/* creer une spline lineaire */
+	la_spline->next_time_spline=0;
+	strcpy(la_spline->nom,T_NOUV_SPLINE);
+	
+	if(nb_time_spline == 1)  /* aucune time spline a part la lineaire */
+	{	
+		first_time_spline = la_spline;
+		
+		nb_time_spline++;
+		return 1;
+	}
+	
+	/* ici on avait deja des time spline */
+	/* fait pointer la derniere sur la notre */
+	last_spline = find_time_spline(nb_time_spline-1);
+	last_spline->next_time_spline = la_spline;
+	
+	nb_time_spline++;
+	return nb_time_spline-1;
+}
+
+static void smooth_time_spline(TIME_SPLINE *la_spline, int force)
+{	int i,val;
+	
+	if(force == 1)
+	{	for(i=point_1+1;i<point_2;i++)
+		{	val = la_spline->valeur[i-1] + la_spline->valeur[i] + la_spline->valeur[i+1];
+			val /= 3;
+			la_spline->valeur[i]=val;
+		}
+	}else if(force == 2)
+	{	for(i=point_1+2;i<point_2-1;i++)
+		{	val = la_spline->valeur[i-2] + la_spline->valeur[i-1] + la_spline->valeur[i] + la_spline->valeur[i+1] + la_spline->valeur[i+2];
+			val /= 5;
+			la_spline->valeur[i]=val;
+		}
+	}else
+	{	for(i=point_1+3;i<point_2-2;i++)
+		{	val = la_spline->valeur[i-3] + la_spline->valeur[i-2] + la_spline->valeur[i-1] + la_spline->valeur[i]
+					 + la_spline->valeur[i+1] + la_spline->valeur[i+2] + la_spline->valeur[i+3];
+			val /= 7;
+			la_spline->valeur[i]=val;
+		}
+	}
+}		
+
+void reset_time_spline(TIME_SPLINE *la_spline)
+{	int i;
+	
+	for(i=0;i<256;i++)
+		la_spline->valeur[i] = i;
+	
+	la_spline->mode = 1; /* manuel */
+	la_spline->interpolee = TRUE; 
+	la_spline->nb_points = 4; 
+	la_spline->point[0][0] = 0; 
+	la_spline->point[0][1] = 0; 
+/*	la_spline->point[1][0] = 127; 
+	la_spline->point[1][1] = 127; 
+	la_spline->point[2][0] = 255; 
+	la_spline->point[2][1] = 255; 
+	*/
+	la_spline->point[1][0] = 100; 
+	la_spline->point[1][1] = 100; 
+	la_spline->point[2][0] = 200; 
+	la_spline->point[2][1] = 200; 
+	la_spline->point[3][0] = 255; 
+	la_spline->point[3][1] = 255; 
+}
+
+void copy_spline_name(int index, char *str)
+{	TIME_SPLINE *la_spline;
+	
+	if(index == 0)
+	{	strcpy(str,T_LINEAR_SPLINE);
+		return;
+	}else
+	{	la_spline = find_time_spline(index);
+		if(la_spline)
+			strcpy(str,la_spline->nom);
+		return;
+	}	
+}
+
+/* prepa paration des coefs de lagrange */
+static void make_coefs(TIME_SPLINE *la_spline, double coefs[])
+{	int n = la_spline->nb_points;
+	int i,j;
+	
+	/* Ci = PI(j=0 to n, j!=i, xi-xj) */
+	
+	for(i=0 ; i<n ; i++)
+	{	coefs[i] = 1;
+		for(j=0 ; j<n ; j++)
+		{	if(i!=j)
+				coefs[i] *= (double)(la_spline->point[i][0] - la_spline->point[j][0]);
+		}
+	}
+}
+
+/* Calcul point selon methode Lagrange */
+/* pour repasser en mode manuel */
+static void calc_lagrange(void)
+{	double y,li;
+	int n = tempo_spline.nb_points;
+	int i,j,xc;
+	
+	
+	for(xc=0;xc<256;xc++)
+	{	y=0;
+		for(i=0 ; i<n ; i++)
+		{	li=1;
+			for(j=0 ; j<n ; j++)
+			{	if(i!=j)
+					li *= (double)(xc - tempo_spline.point[j][0]);
+			}
+			li = li/tmp_coefs[i];
+			y += (double)tempo_spline.point[i][1] * li;
+		}
+		if(y<0) y=0;
+		if(y>255) y=255;
+		tempo_spline.valeur[xc] = (char)y;
+	}
+}
+
+/* trouve l'addy d'une spline suivant l'indice, pas de verif !! */
+
+TIME_SPLINE *find_time_spline(int indice)
+{	int i;
+	TIME_SPLINE *cur_spline=first_time_spline;
+	
+	if(nb_time_spline==1)
+		return 0;
+	
+	for(i=1;i<indice;i++)
+	{	cur_spline = cur_spline->next_time_spline;
+		if(cur_spline == 0)
+			return 0;
+	}
+	
+	return cur_spline;
+}
+
+static int cdecl ctim_draw_prev(PARMBLK *parmblock)
+{	GRECT area,real;
+	int base_x,base_y,i,y;
+	TIME_SPLINE *la_spline;
+	
+	base_x = ctim_var.adr_form[CTIM_PREV].ob_x + ctim_var.adr_form[0].ob_x;
+	base_y = ctim_var.adr_form[CTIM_PREV].ob_y + ctim_var.adr_form[0].ob_y;
+	
+	real.g_x = base_x-1;
+	real.g_y = base_y-1;
+	real.g_w = 66;
+	real.g_h = 66;
+	
+	area.g_x = parmblock->pb_xc;
+	area.g_y = parmblock->pb_yc;
+	area.g_w = parmblock->pb_wc;
+	area.g_h = parmblock->pb_hc;
+
+	rc_intersect(&real,&area);
+	set_clip(1, &area);
+	
+	rect_3d(base_x-1,base_y-1,66,66);
+	rect_full(base_x,base_y,64,64, color_3d1);
+	
+	if(selected_spline>0)	/* vrai time spline */
+	{	la_spline = find_time_spline(selected_spline);
+		if(la_spline)
+		{	for(i=0; i<64; i++)
+			{	y = (int)spline_comput(-1,la_spline,i,64,64);
+				ligne(base_x+i,base_y+(64-y),1,y,LBLACK);
+			}
+		}
+	}else 						/* time lineaire */
+	{	for(i=0; i<64; i++)
+			ligne(base_x+i,base_y+(64-i),1,i,LBLACK);
+	}
+	set_clip(0, &area);
+	return 0;
+	
+}
+
+static int cdecl etim_draw_limites(PARMBLK *parmblock)
+{	GRECT area;
+	int base_x,base_y;
+	int xy[4];
+	
+	base_x = etim_var.adr_form[ETIM_LIMITES].ob_x + etim_var.adr_form[0].ob_x;
+	base_y = etim_var.adr_form[ETIM_LIMITES].ob_y + etim_var.adr_form[0].ob_y;
+	
+	area.g_x = parmblock->pb_xc;
+	area.g_y = parmblock->pb_yc;
+	area.g_w = parmblock->pb_wc;
+	area.g_h = parmblock->pb_hc;
+
+	set_clip(1, &area);
+
+	rect_full(base_x,base_y,256,8, color_3d1);
+	ligne(base_x,base_y,1,8,BLACK);
+	ligne(base_x+255,base_y,1,8,BLACK);
+	rect_full(base_x+point_1,base_y,point_2+1-point_1,8, YELLOW);
+	vsl_color(vdi_handle,RED);
+	
+	/* MARQUEUR DEBUT */
+	xy[0] = base_x+point_1;		xy[1] = base_y;
+	xy[2] = base_x+point_1;		xy[3] = base_y+7;
+	v_pline(vdi_handle,2,xy);	
+	xy[0] = base_x+point_1+1;	xy[1] = base_y+1;
+	xy[2] = base_x+point_1+1;	xy[3] = base_y+6;
+	v_pline(vdi_handle,2,xy);	
+	xy[0] = base_x+point_1+2;	xy[1] = base_y+2;
+	xy[2] = base_x+point_1+2;	xy[3] = base_y+5;
+	v_pline(vdi_handle,2,xy);	
+	xy[0] = base_x+point_1+3;	xy[1] = base_y+3;
+	xy[2] = base_x+point_1+3;	xy[3] = base_y+4;
+	v_pline(vdi_handle,2,xy);	
+	/* MARQUEUR FIN */
+	xy[0] = base_x+point_2;		xy[1] = base_y;
+	xy[2] = base_x+point_2;		xy[3] = base_y+7;
+	v_pline(vdi_handle,2,xy);	
+	xy[0] = base_x+point_2-1;	xy[1] = base_y+1;
+	xy[2] = base_x+point_2-1;	xy[3] = base_y+6;
+	v_pline(vdi_handle,2,xy);	
+	xy[0] = base_x+point_2-2;	xy[1] = base_y+2;
+	xy[2] = base_x+point_2-2;	xy[3] = base_y+5;
+	v_pline(vdi_handle,2,xy);	
+	xy[0] = base_x+point_2-3;	xy[1] = base_y+3;
+	xy[2] = base_x+point_2-3;	xy[3] = base_y+4;
+	v_pline(vdi_handle,2,xy);	
+
+	set_clip(0, &area);
+	return 0;
+	
+}
+
+static int cdecl etim_draw_main(PARMBLK *parmblock)
+{	GRECT area,real;
+	int base_x,base_y;
+	int i,xy[4],old=0,x,y,w,h;
+	
+	base_x = etim_var.adr_form[ETIM_MAIN].ob_x + etim_var.adr_form[0].ob_x;
+	base_y = etim_var.adr_form[ETIM_MAIN].ob_y + etim_var.adr_form[0].ob_y;
+	
+	real.g_x = base_x-1;
+	real.g_y = base_y-1;
+	real.g_w = 258;
+	real.g_h = 258;
+	
+	area.g_x = parmblock->pb_xc;
+	area.g_y = parmblock->pb_yc;
+	area.g_w = parmblock->pb_wc;
+	area.g_h = parmblock->pb_hc;
+
+	rc_intersect(&real,&area);
+	set_clip(1, &area);
+	
+	rect_3d(base_x-1,base_y-1,258,258);
+	rect_full(base_x,base_y,256,256, WHITE);
+
+	vsl_color(vdi_handle,BLACK);
+	
+	if(tempo_spline.mode == 1)	/* manuel */
+	{	old = base_y + 256 - tempo_spline.valeur[0]-1;
+		for(i=1;i<256;i++)
+		{	
+			xy[0] = base_x+i-1;		xy[1] = old;
+			xy[2] = base_x+i;			xy[3] = base_y + 256 - tempo_spline.valeur[i]-1;
+			old = xy[3];
+			
+			v_pline(vdi_handle,2,xy);	
+		}
+	}else if(tempo_spline.mode == 2)	/* lignes brisees */
+	{	vsm_type(vdi_handle,4);
+		vsm_height(vdi_handle,6);
+		vsm_color(vdi_handle,LBLUE);
+
+		for(i=0;i<tempo_spline.nb_points;i++)
+		{	x=tempo_spline.point[i][0];
+			y=tempo_spline.point[i][1];
+			w=tempo_spline.point[i+1][0]-x+1;
+			h=tempo_spline.point[i+1][1]-y-1;
+			x+=base_x;
+			y=255-y;
+			y+=base_y;
+			
+			if(i != tempo_spline.nb_points-1)
+				ligne(x,y,w,-h,BLACK);
+			xy[0]=x;			xy[1]=y;
+			v_pmarker(vdi_handle,1,xy);
+		}
+	}
+	
+	set_clip(0, &area);
+	return 0;
+	
+}
+
+/* le calcul d'une spline,
+	si on passe un index de time spline, son addy est calculee,
+	dans ce cas, mettre adr_spline = 0,
+	si on passe l'adr, il faut mettre l'index a -1. */
+long spline_comput(int index,TIME_SPLINE *adr_spline, long time, long max_abscisse, long max_ordonee)
+{	TIME_SPLINE *la_spline;
+	long ordonee,haut,larg,base;
+	int abscisse1,i;
+	
+	if(index == 0)	/* la linea */
+		return (time * max_ordonee)/max_abscisse;
+	
+	if(index > 0)
+	{	la_spline = find_time_spline(index);
+		if(la_spline == 0)
+			return 0;
+	}else
+		la_spline = adr_spline;
+	
+	abscisse1 = (int)( (time * 255L) / max_abscisse );
+	
+	if(la_spline->mode == 1) 			/* MODE MANUEL */
+		ordonee = ((long)(la_spline->valeur[abscisse1]) * max_ordonee) / 255;
+	else if(la_spline->mode == 2) 	/* MODE LIGNES BRISEES */
+	{	for(i=0;i<la_spline->nb_points-1;i++)
+		{	if(abscisse1>=la_spline->point[i][0] && abscisse1<la_spline->point[i+1][0])
+				break;
+		}
+		haut = la_spline->point[i+1][1] - la_spline->point[i][1];
+		haut = (haut * max_ordonee)/255;
+		base = (la_spline->point[i][1] * max_ordonee)/255;
+		larg = la_spline->point[i+1][0] - la_spline->point[i][0]+1;
+		larg = (larg * max_abscisse)/255;
+		time = time - (max_abscisse * la_spline->point[i][0])/255;
+		if(larg == 0 || larg == 1)
+			ordonee = base;
+		else
+			ordonee = base + (haut*time)/larg;
+		
+	}
+
+	return ordonee;
+}
+
+void delete_spline(int index)
+{	int nb_used=0,i,mvt_index,time_spl,tmp,j,k;
+	TIME_SPLINE *la_spline,*preced;
+	char str[100];
+	TRAN_REAL_PARAM *tran_real_param;
+	STOQUAG_EFF *stoquag_effet;
+	
+	if(index==0)
+		return;		/* puisse qu'elle est permanante */
+	
+	/* on va d'abort verifier combien de fois ele est utilisee */
+	
+	/* les prj obj */
+	for(i=0;i<projet.nb_obj; i++)	
+	{	if(prj_obj[i].time == index)
+			nb_used++;
+		
+		/* les mouvements */
+		mvt_index = prj_obj[i].mvt;
+		if(mvt_index)
+		{	if(mvt[mvt_index].time == index)
+				nb_used++;
+		}
+
+		/* les intensites */
+		tmp = prj_obj[i].intens;
+		if( !(tmp & 0x8000) )
+		{	time_spl = tmp & 0x0fff;
+			if(time_spl == index)
+				nb_used++;
+		}
+		
+		/* les effets */
+		if(prj_obj[i].stoquag_eff)
+		{	stoquag_effet = prj_obj[i].stoquag_eff;
+			for(j=0;j<stoquag_effet->nb_effets;j++)
+			{	tran_real_param = &stoquag_effet->effet_param[j];
+				for(k=0;k<3;k++)
+					if(tran_real_param->time[k] == index)
+						nb_used++;
+			}
+		}
+
+	}
+
+	/* les transitions */
+	for(i=0;i<nb_used_transit; i++)	
+	{	if(prj_transit[i].aff_time == index)
+			nb_used++;
+		tran_real_param = &prj_transit[i].tran_real_param;
+		for(j=0;j<3;j++)
+			if(tran_real_param->time[j] == index)
+				nb_used++;
+	}
+	
+	if(nb_used)
+	{	sprintf(str,T_SPLINE_USED_N_FOIS,nb_used);
+		tmp = super_alert(2,2,str);
+		if(tmp == 2)
+			return;
+	}
+	
+	/* on efface ! */
+	la_spline = find_time_spline(index);
+	if(la_spline == 0)
+		return;
+	
+	if(index == 1)
+		first_time_spline = la_spline->next_time_spline;
+	else
+	{ 	
+		preced = find_time_spline(index-1);
+		if(index == nb_time_spline - 1)	/* la derniere */
+			preced->next_time_spline = 0;	/* la preced devient la derniere */
+		else
+			preced->next_time_spline = la_spline->next_time_spline;
+	}
+	
+	free(la_spline);
+	nb_time_spline--;
+	
+	/* corrige toutes les correspondances */
+		/* les prj obj */
+	for(i=0;i<projet.nb_obj; i++)	
+	{	if(prj_obj[i].time == index)
+			prj_obj[i].time =0;
+		else if(prj_obj[i].time >= index)
+			prj_obj[i].time--;
+		
+		/* les mouvements */
+		mvt_index = prj_obj[i].mvt;
+		if(mvt_index)
+		{	if(mvt[mvt_index].time == index)
+				mvt[mvt_index].time = 0;
+			else if(mvt[mvt_index].time >= index)
+				mvt[mvt_index].time--;
+		}
+
+		/* les intensites */
+		tmp = prj_obj[i].intens;
+		time_spl = tmp & 0x0fff;
+		if(time_spl == index)
+			time_spl=0;
+		else if(time_spl >= index)
+			time_spl--;
+		tmp = (tmp & 0xf000) | time_spl;
+		prj_obj[i].intens = tmp;
+
+	/* les effets */
+		if(prj_obj[i].stoquag_eff)
+		{	stoquag_effet = prj_obj[i].stoquag_eff;
+			for(j=0;j<stoquag_effet->nb_effets;j++)
+			{	tran_real_param = &stoquag_effet->effet_param[j];
+				for(k=0;k<3;k++)
+				{	if(tran_real_param->time[k] == index)
+						tran_real_param->time[k] = 0;
+					else if(tran_real_param->time[k] > index)
+						tran_real_param->time[k]--;
+				}
+			}
+		}
+	}
+
+	/* les transitions */
+	for(i=0;i<nb_used_transit; i++)	
+	{	if(prj_transit[i].aff_time == index)
+			prj_transit[i].aff_time = 0;
+		else if(prj_transit[i].aff_time > index)
+			prj_transit[i].aff_time--;
+			/* LES PARAMETRES */
+		tran_real_param = &prj_transit[i].tran_real_param;
+		for(j=0;j<3;j++)
+		{	if(tran_real_param->time[j] == index)
+				tran_real_param->time[j] = 0;
+			else if(tran_real_param->time[j] > index)
+				tran_real_param->time[j]--;
+		}
+	}
+
+
+}

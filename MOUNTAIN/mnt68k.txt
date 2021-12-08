@@ -1,0 +1,5 @@
+Cette version de Mountain en cours de
+developpement est destinees aux machines 68000
+et plus particulierement aux emulateurs Atari pour PC.
+
+C'est du BETA, aucune garantie !
