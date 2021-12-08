@@ -1,0 +1,20 @@
+; PROJET pour module d'enregistrement mountain
+
+MOUNT_R.DTA
+
+.C [ -Y -2 ]
+.L []
+.S [ -Y -2 ]
+
+=                  ; Liste des modules
+
+
+;Source principal
+mount_r.s
+mountcr1.c
+mount_r2.s
+mountcr2.c
+mount_r3.s
+PCSTDLIB.LIB       ; standard library
+PCTOSLIB.LIB       ; TOS library
+PCGEMLIB.LIB       ; AES and VDI library
